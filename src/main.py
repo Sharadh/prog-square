@@ -6,13 +6,8 @@ from program_meta import ProgramMeta
 from graph import Graph
 from graph_utils import topological_sort
 
-DIR_PATH = os.path.join(
-    os.path.dirname(os.path.dirname(os.path.realpath(__file__))),
-    'data/hello'
-)
 
-
-def process_file(filepath):
+def get_file_meta(filepath):
     file = open(filepath, 'r')
     source = file.read()
     root = ast.parse(source)
@@ -29,7 +24,7 @@ def process(path_to_dir):
     program_to_vertex = {}
     for filename in os.listdir(path_to_dir):
         filepath = os.path.join(path_to_dir, filename)
-        meta = process_file(filepath)
+        meta = get_file_meta(filepath)
 
         vertex_id = g.add_vertex(meta)
         program_to_vertex[meta.pid] = vertex_id
@@ -46,6 +41,3 @@ def process(path_to_dir):
 
     print g
     print [g.V[x].data for x in topological_sort(g)]
-
-if __name__ == '__main__':
-    process(DIR_PATH)
