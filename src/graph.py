@@ -43,7 +43,7 @@ class Graph(object):
 
     def add_vertices(self, vertex_data_list):
         vids = []
-        for item in data_list:
+        for item in vertex_data_list:
             vids.append(self.add_vertex(item))
         return vids
 

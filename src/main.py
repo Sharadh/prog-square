@@ -1,5 +1,4 @@
 import ast
-import json
 import os
 
 from ast_visitors import CountingVisitor
