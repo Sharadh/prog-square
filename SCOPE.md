@@ -45,4 +45,9 @@ skill_tree = topological_sort(meta)
     - Should this be unigram/bigram/...?
 * Sort the problem set in order of "A contained in B", that is, partial ordering of the entire problem set
 
-
+## Updates
+* [sk]: Update 4 Oct 16 - Happy with logic. Next step: get large and interesting data. Try:
+    * StackOverflow / Reddit for <Question, Snipper> pairs
+        - Research xkcd-related script to pull answers from SO
+    * CodeAcademy; Hour of Code : open datasets?
+    * Code.org: Mail for research related access 

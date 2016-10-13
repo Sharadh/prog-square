@@ -34,4 +34,10 @@ class ProgramMeta(object):
         return "<ProgramMeta #{}>  {}".format(self.pid, self.name)
 
     def __contains__(self, other):
-        return set(other.counts.keys()) <= set(self.counts.keys())
+        return (
+            set(other.counts.keys()) <= set(self.counts.keys()) and
+            all([
+                other.counts[key] <= self.counts[key]
+                for key in other.counts.keys()
+                ])
+            )
