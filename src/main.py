@@ -1,4 +1,5 @@
 import ast
+import json
 import os
 
 from ast_visitors import CountingVisitor
@@ -70,3 +71,20 @@ def process(path_to_dir):
 
     print g
     print [g.V[x].data for x in topological_sort(g)]
+    print graph_to_json(g)
+
+
+def graph_to_json(graph):
+    data = {'nodes': [], 'links': []}
+    for _, vertex in enumerate(graph.V):
+        data['nodes'].append({
+            'id': vertex.uid,
+            'name': vertex.data.name
+        })
+        for vid in vertex.adj:
+            to_vertex = graph.V[vid]
+            data['links'].append({
+                'source': vertex.uid,
+                'target': to_vertex.uid
+            })
+    return json.dumps(data, indent=2)
