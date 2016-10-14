@@ -104,7 +104,8 @@
   
   var force = null,
     nodes = null,
-    links = null; 
+    links = null,
+    names = null;
 
   function initForce() {
     svg.selectAll('*').remove();
@@ -116,15 +117,25 @@
       .linkDistance(150)
       .charge(-100);
 
-    nodes = svg.selectAll('.node')
+    nodes = svg.append('g').selectAll('.node')
       .data(graph.nodes)
       .enter().append('circle')
-      .attr('class', 'node');
+      .attr('class', 'node')
+      .attr('r', width/25);
     
-    links = svg.selectAll('.link')
+    links = svg.append('g').selectAll('.link')
       .data(graph.links)
       .enter().append('line')
       .attr('class', 'link');
+
+    names = svg.append('g').selectAll("text")
+      .data(graph.nodes)
+      .enter().append("text")
+      .attr("x", 8)
+      .attr("y", ".31em")
+      .text(function(d) {
+        return d.name;
+      });
 
     force.on('tick', stepForce);
   }
@@ -136,6 +147,7 @@
     if (force.fullSpeed) {
       updatedNodes = nodes;
       updatedLinks = links;
+      updatedNames = names;
     } else {
       updatedNodes = nodes.transition()
         .ease('linear')
@@ -143,12 +155,18 @@
       updatedLinks = links.transition()
         .ease('linear')
         .duration(animationStep);
+      updatedNames = names.transition()
+        .ease('linear')
+        .duration(animationStep);
     }
 
     updatedNodes
-      .attr('r', width/25)
       .attr('cx', function(d) { return d.x; })
       .attr('cy', function(d) { return d.y; });
+
+    updatedNames
+      .attr('x', function(d) { return d.x; })
+      .attr('y', function(d) { return d.y; });
 
     updatedLinks
       .attr('x1', function(d) { return d.source.x; })
@@ -169,7 +187,7 @@
   }
 
   initForce();
-  force.slowMotion = true;
+  force.fullSpeed = true;
   force.start();
 
 }())
