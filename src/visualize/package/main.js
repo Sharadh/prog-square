@@ -1,5 +1,7 @@
 /**
  * References
+ * ====
+ * Intro and Ramp Up
  * http://alignedleft.com/tutorials/d3/binding-data
  * http://jsdatav.is/visuals.html?id=83515b77c2764837aac2
  * http://bl.ocks.org/mbostock/1153292
@@ -10,7 +12,7 @@
  * Level-ed Layout
  * http://bl.ocks.org/rmarimon/1079724
  *
- * Future: 
+ * Future:
  * http://stackoverflow.com/questions/23986466/d3-force-layout-linking-nodes-by-name-instead-of-index
  */
 (function(){
@@ -26,7 +28,8 @@
   var force = null,
     nodes = null,
     links = null,
-    names = null;
+    names = null,
+    maxDepth = 0;
 
   function init(graph) {
     svg.selectAll('*').remove();
@@ -62,6 +65,12 @@
           })
           .on('mouseover', handleNodeMouseOver)
           .on('mouseout', handleNodeMouseOut);
+
+    // Traverese the node data...
+    maxDepth = nodes.data().reduce(function (maxSoFar, d) {
+      d.depth = d.depth || 1;
+      return (maxSoFar > d.depth) ? maxSoFar : d.depth;
+    }, 0);
 
     links = svg
       .append('g')
@@ -125,10 +134,9 @@
 
   function step(d) {
     // Apply leveling
-    var maxDepth = 4;
     var k = .5 * d.alpha; 
     nodes.each(function(d) { 
-        d.y += ((d.group || maxDepth) * 100 - d.y) * k; 
+        d.y += ((d.depth || maxDepth) * 100 - d.y) * k; 
     });
 
     nodes.attr('transform', transform);

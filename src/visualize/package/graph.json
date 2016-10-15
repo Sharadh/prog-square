@@ -3,34 +3,34 @@
     {
       "id": 0, 
       "name": "00_hello_world",
-      "group": 1
+      "depth": 1
     }, 
     {
       "id": 1, 
       "name": "01_hello_function",
-      "group": 2
+      "depth": 2
     }, 
     {
       "id": 2, 
       "name": "02_hello_param_if",
-      "group": 4
+      "depth": 4
     }, 
     {
       "id": 3, 
       "name": "03_hello_param",
-      "group": 3
+      "depth": 3
     }, 
     {
       "id": 4, 
       "name": "04_hello_world_again",
-      "group": 1
+      "depth": 1
     }, 
     {
       "id": 5, 
       "name": "05_hello_world_twice",
-      "group": 2
+      "depth": 2
     }
-  ], 
+  ],
   "links": [
       {
         "source": 0, 
