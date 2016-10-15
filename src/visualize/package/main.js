@@ -3,6 +3,12 @@
  * http://alignedleft.com/tutorials/d3/binding-data
  * http://jsdatav.is/visuals.html?id=83515b77c2764837aac2
  * http://bl.ocks.org/mbostock/1153292
+ * 
+ * SVG Mouseevents
+ * http://bl.ocks.org/WilliamQLiu/76ae20060e19bf42d774
+ *
+ * Level-ed Layout
+ * http://bl.ocks.org/rmarimon/1079724
  *
  * Future: 
  * http://stackoverflow.com/questions/23986466/d3-force-layout-linking-nodes-by-name-instead-of-index
@@ -65,7 +71,6 @@
     .attr('width', width)
     .attr('height', height);
 
-  var animationStep = 400;
   var nodeRadius = width/25;
   
   var force = null,
@@ -94,38 +99,52 @@
       .linkDistance(150)
       .charge(-100);
 
-    nodes = svg.append('g').selectAll('.node')
-      .data(graph.nodes)
-      .enter().append('circle')
-        .attr('class', 'node')
-        .attr('r', function(d) {
-          d.radius = nodeRadius;
-          return d.radius;
-        });
+    nodes = svg
+      .append('g')
+      .attr('id', 'g-nodes')
+        .selectAll('.node')
+        .data(graph.nodes)
+        .enter().append('circle')
+          .attr('class', 'node')
+          .attr('r', function(d) {
+            d.radius = nodeRadius;
+            return d.radius;
+          })
+          .on('mouseover', handleNodeMouseOver)
+          .on('mouseout', handleNodeMouseOut);
+
+    links = svg
+      .append('g')
+      .attr('id', 'g-links')
+        .selectAll('.link')
+        .data(graph.links)
+        .enter().append('path')
+          .attr('class', 'link')
+          .attr('marker-end', 'url(#program)');
+
+    names = svg
+      .append('g')
+      .attr('id', 'g-node-labels')
+        .selectAll('text')
+        .data(graph.nodes)
+        .enter().append("text")
+          .attr('x', 8)
+          .attr('y', ".31em")
+          .attr('id', function(d) { return 'label-' + d.id })
+          .attr('display', 'none')
+          .text(function(d) { return d.name; });
     
-    links = svg.append('g').selectAll('.link')
-      .data(graph.links)
-      .enter().append('path')
-        .attr('class', 'link')
-        .attr('marker-end', 'url(#program)');
-
-    names = svg.append('g').selectAll("text")
-      .data(graph.nodes)
-      .enter().append("text")
-        .attr("x", 8)
-        .attr("y", ".31em")
-        .text(function(d) {
-          return d.name;
-        });
-
     force.on('tick', step);
   }
 
-  function linkArc(d) {
-    var dx = d.target.x - d.source.x,
-      dy = d.target.y - d.source.y,
-      dr = Math.sqrt(dx * dx + dy * dy);
-    return "M" + d.source.x + "," + d.source.y + "A" + dr + "," + dr + " 0 0,1 " + d.target.x + "," + d.target.y;
+  function handleNodeMouseOver(d) {
+    d3.select(this).attr('class', 'node active');
+    d3.select('#label-' + d.id).attr('display', 'inherit');
+  }
+
+  function handleNodeMouseOut(d) {
+    d3.select(this).attr('class', 'node');
+    d3.select('#label-' + d.id).attr('display', 'none');
   }
 
   function linkLine(d) {
@@ -150,15 +169,13 @@
       "L" + targetX + "," + targetY;
   }
 
+  function transform(d) {
+    return "translate(" + d.x + "," + d.y + ")";
+  }
+
   function step() {
-    nodes
-      .attr('cx', function(d) { return d.x; })
-      .attr('cy', function(d) { return d.y; });
-
-    names
-      .attr('x', function(d) { return d.x; })
-      .attr('y', function(d) { return d.y; });
-
+    nodes.attr('transform', transform);
+    names.attr('transform', transform);
     links.attr('d', linkLine);
   }
 

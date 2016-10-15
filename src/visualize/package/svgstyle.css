@@ -4,6 +4,11 @@
     stroke-width: 2px;
 }
 
+.node.active {
+    stroke: #f4b942;
+    stroke-width: 5px;
+}
+
 .link {
     fill: none;
     stroke: #777;
@@ -15,7 +20,6 @@ marker#program {
 }
 
 text {
-    display: none;
     font: 14px sans-serif;
     text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, 0 -1px 0 #fff, -1px 0 0 #fff;
 }
