@@ -1,0 +1,21 @@
+.node {
+    fill: #ccc;
+    stroke: #fff;
+    stroke-width: 2px;
+}
+
+.link {
+    fill: none;
+    stroke: #777;
+    stroke-width: 2px;
+}
+
+marker#program {
+    fill: #777;
+}
+
+text {
+    display: none;
+    font: 14px sans-serif;
+    text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, 0 -1px 0 #fff, -1px 0 0 #fff;
+}
