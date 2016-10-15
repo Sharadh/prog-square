@@ -3,7 +3,6 @@
     http://louistiao.me/posts/python-simplehttpserver-recipe-serve-specific-directory/
 """
 import posixpath
-import argparse
 import urllib
 import os
 
