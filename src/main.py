@@ -2,7 +2,8 @@ import ast
 import os
 
 from ast_visitors import CountingVisitor
-from program_meta import ProgramMeta
+from disjoint_set import Forest
+from program_meta import ProgramMeta, ProgramMetaGroup
 from graph import Graph
 from graph_utils import topological_sort
 
@@ -18,6 +19,31 @@ def get_file_meta(filepath):
     return ProgramMeta(filepath, counter.counts)
 
 
+def decompose_to_scc(programs):
+    # This does a O(V^2) preprocessing pass on the data, which may be
+    # an issue. If this becomes a problem, implement a proper O(V+E)
+    # SCC algo, but that may not help if E = O(V^2)
+    f = Forest([program.pid for program in programs])
+    for p1 in programs:
+        for p2 in programs:
+            if p1 is p2:
+                continue
+
+            if p1 == p2:
+                f.union(p1.pid, p2.pid)
+
+    minimal_programs = {}
+    for program in programs:
+        pid = f.find_set(program.pid)
+        try:
+            program_group = minimal_programs[pid]
+        except KeyError:
+            program_group = minimal_programs[pid] = ProgramMetaGroup([])
+        program_group.add(program)
+
+    return minimal_programs.values()
+
+
 def process(path_to_dir):
     g = Graph()
     programs = []
@@ -25,15 +51,18 @@ def process(path_to_dir):
     for filename in os.listdir(path_to_dir):
         filepath = os.path.join(path_to_dir, filename)
         meta = get_file_meta(filepath)
-
-        vertex_id = g.add_vertex(meta)
-        program_to_vertex[meta.pid] = vertex_id
         programs.append(meta)
+
+    programs = decompose_to_scc(programs)
+    for program_meta in programs:
+        vertex_id = g.add_vertex(program_meta)
+        program_to_vertex[program_meta.pid] = vertex_id
 
     for i in xrange(len(programs)):
         for j in xrange(i + 1, len(programs)):
             first, second = programs[i], programs[j]
             first_vid, second_vid = program_to_vertex[first.pid], program_to_vertex[second.pid]
+
             if first in second:
                 g.add_edge((first_vid, second_vid))
             if second in first:
