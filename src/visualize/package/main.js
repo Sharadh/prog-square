@@ -23,7 +23,8 @@
     .attr('width', width)
     .attr('height', height);
 
-  var nodeRadius = 10;
+  var nodeRadius = 10,
+    verticalSpace = 100;
   
   var force = null,
     nodes = null,
@@ -50,8 +51,17 @@
       .size([width, height])
       .nodes(graph.nodes)
       .links(graph.links)
-      .linkDistance(150)
-      .charge(-100);
+      .linkDistance(function (d) {
+        var depthDiff = d.target.depth - d.source.depth;
+        return depthDiff * verticalSpace;
+      })
+      .linkStrength(function (d) {
+        // Beyond 3 levels, the link strength parameter
+        // is completely ineffective.
+        var depthDiff = d.target.depth - d.source.depth;
+        return Math.max(0, 1 - (depthDiff - 1) * 0.5);
+      })
+      .charge(-200);
 
     // Traverese the node data...
     maxDepth = graph.nodes.reduce(function (maxSoFar, d) {
