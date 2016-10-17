@@ -27,18 +27,21 @@
     .attr('height', height);
 
   var nodeRadius = 10,
-    nodeCharge = -300,
-    verticalSpace = 100,
+    linkNodeRadius = 2,
+    nodeCharge = -500,
+    verticalSpace = 150,
     linkStrengthArray = [0.5, 0.2, 0.05];
   
   var force = null,
     nodes = null,
+    linkNodes = null,
     links = null,
     levels = null,
     names = null,
     maxDepth = 0;
 
-  var showLevels = false;
+  var showLevels = false,
+    showLinkNodes = false;
 
   function init(graph) {
     svg.selectAll('*').remove();
@@ -54,9 +57,22 @@
       .append('path')
         .attr('d', 'M0,0L11,6L0,11');
 
+    /**
+     * To prevent Node-Edge overlap, we insert these
+     * linkNodes that essentially provide charge to edges, centered
+     * at their mid-point.
+     */
+    graph.linkNodes = graph.links.map(function (d) {
+      return {
+        isLinkNode: true,
+        source: graph.nodes[d.source],
+        target: graph.nodes[d.target]
+      };
+    })
+
     force = d3.layout.force()
       .size([width, height])
-      .nodes(graph.nodes)
+      .nodes(graph.nodes.concat(graph.linkNodes))
       .links(graph.links)
       .linkDistance(function (d) {
         var depthDiff = d.target.depth - d.source.depth;
@@ -111,6 +127,16 @@
           .attr('class', 'link')
           .attr('marker-end', 'url(#program)');
 
+    linkNodes = svg
+      .append('g')
+      .attr('display', showLinkNodes ? 'inherit' : 'none')
+      .attr('id', 'g-link-nodes')
+        .selectAll('.link-node')
+        .data(graph.linkNodes)
+        .enter().append('circle')
+          .attr('class', 'link-node')
+          .attr('r', linkNodeRadius);
+
     nodes = svg
       .append('g')
       .attr('id', 'g-nodes')
@@ -130,9 +156,9 @@
       .attr('id', 'g-node-labels')
         .selectAll('text')
         .data(graph.nodes)
-        .enter().append("text")
+        .enter().append('text')
           .attr('x', 8)
-          .attr('y', ".31em")
+          .attr('y', '.31em')
           .attr('id', function(d) { return 'label-' + d.id })
           .attr('display', 'none')
           .text(function(d) { return d.name; });
@@ -168,8 +194,8 @@
     var sourceX = d.source.x + offsetX;
     var sourceY = d.source.y + offsetY;
     
-    return "M" + sourceX + "," + sourceY +
-      "L" + targetX + "," + targetY;
+    return 'M' + sourceX + ',' + sourceY +
+      'L' + targetX + ',' + targetY;
   }
 
   function levelLine(d) {
@@ -181,7 +207,7 @@
     });
 
     if (!sortedCoords.length) {
-      return "";
+      return '';
     }
 
     var pathSpec = [];
@@ -200,7 +226,13 @@
   }
 
   function transform(d) {
-    return "translate(" + d.x + "," + d.y + ")";
+    return 'translate(' + d.x + ',' + d.y + ')';
+  }
+
+  function transformLinkNode(d) {
+    var dx = (d.source.x + d.target.x)* 0.5,
+      dy = (d.source.y + d.target.y)* 0.5;
+    return 'translate(' + dx + ',' + dy + ')'; 
   }
 
   function step(d) {
@@ -213,6 +245,7 @@
     nodes.attr('transform', transform);
     names.attr('transform', transform);
     links.attr('d', linkLine);
+    linkNodes.attr('transform', transformLinkNode);
     levels.attr('d', levelLine);
   }
 

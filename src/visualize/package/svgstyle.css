@@ -15,6 +15,10 @@
     stroke-width: 2px;
 }
 
+.link-node {
+    fill: #777;
+}
+
 .level-connector {
     fill: none;
     stroke: #ccf;
