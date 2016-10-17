@@ -1,11 +1,11 @@
 .node {
-    fill: #ccc;
+    fill: #f4b942;
     stroke: #fff;
     stroke-width: 2px;
 }
 
 .node.active {
-    stroke: #f4b942;
+    stroke: #4286f4;
     stroke-width: 5px;
 }
 

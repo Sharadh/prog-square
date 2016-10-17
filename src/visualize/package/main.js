@@ -5,6 +5,9 @@
  * http://alignedleft.com/tutorials/d3/binding-data
  * http://jsdatav.is/visuals.html?id=83515b77c2764837aac2
  * http://bl.ocks.org/mbostock/1153292
+ *
+ * D3 Force Layout API Ref
+ * https://github.com/d3/d3-3.x-api-reference/blob/master/Force-Layout.md
  * 
  * SVG Mouseevents
  * http://bl.ocks.org/WilliamQLiu/76ae20060e19bf42d774
@@ -24,7 +27,9 @@
     .attr('height', height);
 
   var nodeRadius = 10,
-    verticalSpace = 100;
+    nodeCharge = -300,
+    verticalSpace = 100,
+    linkStrengthArray = [0.5, 0.2, 0.05];
   
   var force = null,
     nodes = null,
@@ -32,6 +37,8 @@
     levels = null,
     names = null,
     maxDepth = 0;
+
+  var showLevels = false;
 
   function init(graph) {
     svg.selectAll('*').remove();
@@ -59,9 +66,12 @@
         // Beyond 3 levels, the link strength parameter
         // is completely ineffective.
         var depthDiff = d.target.depth - d.source.depth;
-        return Math.max(0, 1 - (depthDiff - 1) * 0.5);
+        return (
+          (depthDiff < linkStrengthArray.length) ?
+          linkStrengthArray[depthDiff] : 0
+        );
       })
-      .charge(-200);
+      .charge(nodeCharge);
 
     // Traverese the node data...
     maxDepth = graph.nodes.reduce(function (maxSoFar, d) {
@@ -82,6 +92,7 @@
 
     levels = svg
       .append('g')
+      .attr('display', showLevels ? 'inherit' : 'none')
       .attr('id', 'g-levels')
         .selectAll('.level-connector')
         .data(depthData)
