@@ -51,3 +51,5 @@ skill_tree = topological_sort(meta)
         - Research xkcd-related script to pull answers from SO
     * CodeAcademy; Hour of Code : open datasets?
     * Code.org: Mail for research related access 
+* [sk]: Update ? Oct 16 - Missed an update in the middle: worked on the visualization since that became urgent. Good stuff done, with one outstanding issue regarding overlapping links.
+* [sk]: Update 1 Nov 16 - c++ isn't something we're doing anytime soon, so removing that third-party data immediately. Also, looks like a good dataset of problems and solutions is at [PracticePython](http://www.practicepython.org/), which might be cool to model our graphs on.
