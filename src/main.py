@@ -7,6 +7,7 @@ from disjoint_set import Forest
 from program_meta import ProgramMeta, ProgramMetaGroup
 from graph import Graph
 from graph_utils import topological_sort
+from utils import warn
 
 
 def get_file_meta(filepath):
@@ -50,8 +51,18 @@ def process(path_to_dir):
     programs = []
     program_to_vertex = {}
     for filename in os.listdir(path_to_dir):
+        _, extension = os.path.splitext(filename)
+        if extension != '.py':
+            continue
+
         filepath = os.path.join(path_to_dir, filename)
-        meta = get_file_meta(filepath)
+        try:
+            meta = get_file_meta(filepath)
+        except SyntaxError as e:
+            warn('Error processing "{}" at {}:{}\n{}'.format(
+                filename, e.lineno, e.offset, e.text))
+            continue
+
         programs.append(meta)
 
     programs = decompose_to_scc(programs)

@@ -40,6 +40,6 @@ test: install
 	@nosetests tests/
 
 run: venv install
-	@. $(VENV_ACTIVATE_SCRIPT); cd src; python cli.py order '../data/hello'
+	@. $(VENV_ACTIVATE_SCRIPT); cd src; python cli.py order '../data/practice-python'
 
 .PHONY: default deps install reinstall lint clean console test run

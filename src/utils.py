@@ -7,8 +7,16 @@ Alex Leone (acleone ~AT~ gmail.com), 2010-01-30
 
 From http://alexleone.blogspot.co.uk/2010/01/python-ast-pretty-printer.html
 """
-
 from ast import AST, iter_fields, parse
+from functools import partial
+
+import click
+
+# Semantically-named convenience functions
+warn = partial(click.secho, fg='yellow')
+success = partial(click.secho, fg='green')
+error = partial(click.secho, fg='red')
+log = click.echo
 
 
 def dump(node, annotate_fields=True, include_attributes=False, indent='  '):
