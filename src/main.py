@@ -46,7 +46,7 @@ def decompose_to_scc(programs):
     return minimal_programs.values()
 
 
-def process(path_to_dir):
+def process(path_to_dir, debug):
     g = Graph()
     programs = []
     program_to_vertex = {}
@@ -80,12 +80,19 @@ def process(path_to_dir):
             if second in first:
                 g.add_edge((second_vid, first_vid))
 
-    print g
-    print [g.V[x].data for x in topological_sort(g)]
-    print graph_to_json(g)
+    if debug:
+        debug_dump(g)
+
+    return graph_to_d3_dict(g)
 
 
-def graph_to_json(graph):
+def debug_dump(graph):
+    print graph
+    print [graph.V[x].data for x in topological_sort(graph)]
+    print json.dumps(graph_to_d3_dict(graph), indent=2)
+
+
+def graph_to_d3_dict(graph):
     """Exports the graph in a format understandable
     by the d3.js library. This means the following:
 
@@ -127,4 +134,4 @@ def graph_to_json(graph):
                 'target': new_ids[to_vertex.uid]
             })
 
-    return json.dumps(data, indent=2)
+    return data

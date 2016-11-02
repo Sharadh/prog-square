@@ -95,6 +95,7 @@ _reading
 *.ast
 *.sublime-project
 *.sublime-workspace
+*output.json
 
 # Temporarily ignore *.cpp
 *.cpp

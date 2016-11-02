@@ -1,5 +1,7 @@
 VENV_DIR=./venv
 VENV_ACTIVATE_SCRIPT=$(VENV_DIR)/bin/activate
+SOURCE?='data/practice-python'
+DEST?=''
 
 default: run
 
@@ -40,6 +42,6 @@ test: install
 	@nosetests tests/
 
 run: venv install
-	@. $(VENV_ACTIVATE_SCRIPT); cd src; python cli.py order '../data/practice-python'
+	@. $(VENV_ACTIVATE_SCRIPT); cd src; python cli.py order $(SOURCE) -o $(DEST)
 
 .PHONY: default deps install reinstall lint clean console test run
