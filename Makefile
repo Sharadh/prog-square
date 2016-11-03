@@ -10,7 +10,7 @@ ifeq ("","$(wildcard "$(VENV_ACTIVATE_SCRIPT)")")
 	@virtualenv $(VENV_DIR)
 	@\
 		. "$(VENV_ACTIVATE_SCRIPT)"; \
-		pip install pip==8.1.1; \
+		pip install pip==9.0.0; \
 		pip install pip-tools
 endif
 
@@ -41,7 +41,15 @@ console: install
 test: install
 	@nosetests tests/
 
-run: venv install
+.PHONY: install reinstall lint clean console test
+
+run: install
 	@. $(VENV_ACTIVATE_SCRIPT); cd src; python cli.py order $(SOURCE) -o $(DEST)
 
-.PHONY: default deps install reinstall lint clean console test run
+visualize: install
+	@. $(VENV_ACTIVATE_SCRIPT); cd src;\
+	 python cli.py order $(SOURCE) -o 'src/visualize/package/graph.json'
+	@. $(VENV_ACTIVATE_SCRIPT); cd src/visualize;\
+	 python main.py
+
+.PHONY: run visualize
