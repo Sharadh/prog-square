@@ -10,7 +10,7 @@ ifeq ("","$(wildcard "$(VENV_ACTIVATE_SCRIPT)")")
 	@virtualenv $(VENV_DIR)
 	@\
 		. "$(VENV_ACTIVATE_SCRIPT)"; \
-		pip install pip==8.1.2; \
+		pip install pip==8.1.1; \
 		pip install pip-tools
 endif
 
