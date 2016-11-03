@@ -8,7 +8,7 @@
  *
  * D3 Force Layout API Ref
  * https://github.com/d3/d3-3.x-api-reference/blob/master/Force-Layout.md
- * 
+ *
  * SVG Mouseevents
  * http://bl.ocks.org/WilliamQLiu/76ae20060e19bf42d774
  *
@@ -18,33 +18,36 @@
  * Future:
  * http://stackoverflow.com/questions/23986466/d3-force-layout-linking-nodes-by-name-instead-of-index
  */
-(function(){
-  var width = 640,
-    height = 480;
+
+/* global d3 */
+
+(function () {
+  var width = 640
+  var height = 480
 
   var svg = d3.select('body').append('svg')
     .attr('width', width)
-    .attr('height', height);
+    .attr('height', height)
 
-  var nodeRadius = 10,
-    linkNodeRadius = 2,
-    nodeCharge = -500,
-    verticalSpace = 150,
-    linkStrengthArray = [0.5, 0.2, 0.05];
-  
-  var force = null,
-    nodes = null,
-    linkNodes = null,
-    links = null,
-    levels = null,
-    names = null,
-    maxDepth = 0;
+  var nodeRadius = 10
+  var linkNodeRadius = 2
+  var nodeCharge = -500
+  var verticalSpace = 150
+  var linkStrengthArray = [0.5, 0.2, 0.05]
 
-  var showLevels = false,
-    showLinkNodes = false;
+  var force = null
+  var nodes = null
+  var linkNodes = null
+  var links = null
+  var levels = null
+  var names = null
+  var maxDepth = 0
 
-  function init(graph) {
-    svg.selectAll('*').remove();
+  var showLevels = false
+  var showLinkNodes = true
+
+  function init (graph) {
+    svg.selectAll('*').remove()
 
     svg.append('defs').append('marker')
       .attr('id', 'program')
@@ -55,7 +58,7 @@
       .attr('markerWidth', '5')
       .attr('markerHeight', '5')
       .append('path')
-        .attr('d', 'M0,0L11,6L0,11');
+        .attr('d', 'M0,0L11,6L0,11')
 
     /**
      * To prevent Node-Edge overlap, we insert these
@@ -67,7 +70,7 @@
         isLinkNode: true,
         source: graph.nodes[d.source],
         target: graph.nodes[d.target]
-      };
+      }
     })
 
     force = d3.layout.force()
@@ -75,35 +78,35 @@
       .nodes(graph.nodes.concat(graph.linkNodes))
       .links(graph.links)
       .linkDistance(function (d) {
-        var depthDiff = d.target.depth - d.source.depth;
-        return depthDiff * verticalSpace;
+        var depthDiff = d.target.depth - d.source.depth
+        return depthDiff * verticalSpace
       })
       .linkStrength(function (d) {
         // Beyond 3 levels, the link strength parameter
         // is completely ineffective.
-        var depthDiff = d.target.depth - d.source.depth;
+        var depthDiff = d.target.depth - d.source.depth
         return (
-          (depthDiff < linkStrengthArray.length) ?
-          linkStrengthArray[depthDiff] : 0
-        );
+          (depthDiff < linkStrengthArray.length)
+          ? linkStrengthArray[depthDiff] : 0
+        )
       })
-      .charge(nodeCharge);
+      .charge(nodeCharge)
 
     // Traverese the node data...
     maxDepth = graph.nodes.reduce(function (maxSoFar, d) {
-      d.depth = d.depth || 1;
-      return (maxSoFar > d.depth) ? maxSoFar : d.depth;
-    }, 0);
+      d.depth = d.depth || 1
+      return (maxSoFar > d.depth) ? maxSoFar : d.depth
+    }, 0)
 
-    depthData = [];
+    var depthData = []
     for (var i = 1; i <= maxDepth; ++i) {
-      datum = graph.nodes.filter(function (d) {
-        return d.depth == i;
+      var datum = graph.nodes.filter(function (d) {
+        return d.depth === i
       })
       depthData.push({
         depth: i,
         nodes: datum
-      });
+      })
     }
 
     levels = svg
@@ -114,9 +117,9 @@
         .data(depthData)
         .enter().append('path')
           .attr('class', 'level-connector')
-          .attr('id', function(d) {
+          .attr('id', function (d) {
             return 'level-' + d.depth
-          });
+          })
 
     links = svg
       .append('g')
@@ -125,7 +128,7 @@
         .data(graph.links)
         .enter().append('path')
           .attr('class', 'link')
-          .attr('marker-end', 'url(#program)');
+          .attr('marker-end', 'url(#program)')
 
     linkNodes = svg
       .append('g')
@@ -135,7 +138,7 @@
         .data(graph.linkNodes)
         .enter().append('circle')
           .attr('class', 'link-node')
-          .attr('r', linkNodeRadius);
+          .attr('r', linkNodeRadius)
 
     nodes = svg
       .append('g')
@@ -144,12 +147,12 @@
         .data(graph.nodes)
         .enter().append('circle')
           .attr('class', 'node')
-          .attr('r', function(d) {
-            d.radius = nodeRadius;
-            return d.radius;
+          .attr('r', function (d) {
+            d.radius = nodeRadius
+            return d.radius
           })
           .on('mouseover', handleNodeMouseOver)
-          .on('mouseout', handleNodeMouseOut);
+          .on('mouseout', handleNodeMouseOut)
 
     names = svg
       .append('g')
@@ -159,99 +162,102 @@
         .enter().append('text')
           .attr('x', 8)
           .attr('y', '.31em')
-          .attr('id', function(d) { return 'label-' + d.id })
+          .attr('id', function (d) { return 'label-' + d.id })
           .attr('display', 'none')
-          .text(function(d) { return d.name; });
-    
-    force.on('tick', step);
+          .text(function (d) { return d.name })
+
+    force.on('tick', step)
   }
 
-  function handleNodeMouseOver(d) {
-    d3.select(this).attr('class', 'node active');
-    d3.select('#label-' + d.id).attr('display', 'inherit');
+  function handleNodeMouseOver (d) {
+    d3.select(this).attr('class', 'node active')
+    d3.select('#label-' + d.id).attr('display', 'inherit')
   }
 
-  function handleNodeMouseOut(d) {
-    d3.select(this).attr('class', 'node');
-    d3.select('#label-' + d.id).attr('display', 'none');
+  function handleNodeMouseOut (d) {
+    d3.select(this).attr('class', 'node')
+    d3.select('#label-' + d.id).attr('display', 'none')
   }
 
-  function linkLine(d) {
-    var dx = d.target.x - d.source.x,
-      dy = d.target.y - d.source.y;
+  function linkLine (d) {
+    var dx = d.target.x - d.source.x
+    var dy = d.target.y - d.source.y
 
-    var dMag = Math.sqrt(dx * dx + dy * dy);
+    var dMag = Math.sqrt(dx * dx + dy * dy)
 
     // Vector addition: dx/dMag and dy/dMag are unit vectors
-    var offsetX = d.target.radius * dx / dMag;
-    var offsetY = d.target.radius * dy / dMag;
-    
-    // Apply appropriate direction offset 
-    // so link starts/ends beyond node circle...
-    var targetX = d.target.x - offsetX;
-    var targetY = d.target.y - offsetY;
+    var offsetX = d.target.radius * dx / dMag
+    var offsetY = d.target.radius * dy / dMag
 
-    var sourceX = d.source.x + offsetX;
-    var sourceY = d.source.y + offsetY;
-    
+    // Apply appropriate direction offset
+    // so link starts/ends beyond node circle...
+    var targetX = d.target.x - offsetX
+    var targetY = d.target.y - offsetY
+
+    var sourceX = d.source.x + offsetX
+    var sourceY = d.source.y + offsetY
+
     return 'M' + sourceX + ',' + sourceY +
-      'L' + targetX + ',' + targetY;
+      'L' + targetX + ',' + targetY
   }
 
-  function levelLine(d) {
-    var leadingOffset = 50;
+  function levelLine (d) {
+    var leadingOffset = 50
     var sortedCoords = d.nodes.map(function (node) {
-      return {x: node.x, y: node.y};
+      return {x: node.x, y: node.y}
     }).sort(function (first, second) {
-      return first.x - second.x;
-    });
+      return first.x - second.x
+    })
 
     if (!sortedCoords.length) {
-      return '';
+      return ''
     }
 
-    var pathSpec = [];
-    var eachPt = sortedCoords.shift();
-    pathSpec.push('M' + 0 + ',' + height/2.0);
-    pathSpec.push('L' + (eachPt.x - leadingOffset) + ',' + eachPt.y);
+    var pathSpec = []
+    var eachPt = sortedCoords.shift()
+    pathSpec.push('M' + 0 + ',' + height / 2.0)
+    pathSpec.push('L' + (eachPt.x - leadingOffset) + ',' + eachPt.y)
     while (sortedCoords.length) {
-      eachPt = sortedCoords.shift();
-      pathSpec.push('L' + (eachPt.x - leadingOffset) + ',' + eachPt.y);
+      eachPt = sortedCoords.shift()
+      pathSpec.push('L' + (eachPt.x - leadingOffset) + ',' + eachPt.y)
     }
-    pathSpec.push('L' + (eachPt.x + leadingOffset) + ',' + eachPt.y);
-    pathSpec.push('L' + width + ',' + height/2.0);
+    pathSpec.push('L' + (eachPt.x + leadingOffset) + ',' + eachPt.y)
+    pathSpec.push('L' + width + ',' + height / 2.0)
 
-    var pathSpecStr = pathSpec.join(' ');
-    return pathSpecStr;
+    var pathSpecStr = pathSpec.join(' ')
+    return pathSpecStr
   }
 
-  function transform(d) {
-    return 'translate(' + d.x + ',' + d.y + ')';
+  function transform (d) {
+    return 'translate(' + d.x + ',' + d.y + ')'
   }
 
-  function transformLinkNode(d) {
-    var dx = (d.source.x + d.target.x)* 0.5,
-      dy = (d.source.y + d.target.y)* 0.5;
-    return 'translate(' + dx + ',' + dy + ')'; 
+  function transformLinkNode (d) {
+    var dx = (d.source.x + d.target.x) * 0.5
+    var dy = (d.source.y + d.target.y) * 0.5
+    return 'translate(' + dx + ',' + dy + ')'
   }
 
-  function step(d) {
+  function step (d) {
     // Apply leveling
-    var k = .5 * d.alpha; 
-    nodes.each(function(d) { 
-        d.y += ((d.depth || maxDepth) * 100 - d.y) * k; 
-    });
+    var k = 0.5 * d.alpha
+    nodes.each(function (d) {
+      d.y += ((d.depth || maxDepth) * 100 - d.y) * k
+    })
 
-    nodes.attr('transform', transform);
-    names.attr('transform', transform);
-    links.attr('d', linkLine);
-    linkNodes.attr('transform', transformLinkNode);
-    levels.attr('d', levelLine);
+    nodes.attr('transform', transform)
+    names.attr('transform', transform)
+    links.attr('d', linkLine)
+    linkNodes.attr('transform', transformLinkNode)
+    levels.attr('d', levelLine)
   }
 
   d3.json('graph.json', function (err, json) {
-    init(json);
-    force.start();
-  });
-
+    if (err) {
+      console.error(err)
+      return
+    }
+    init(json)
+    force.start()
+  })
 }())
