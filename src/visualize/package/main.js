@@ -31,7 +31,7 @@
 
   var nodeRadius = 10
   var linkNodeRadius = 2
-  var nodeCharge = -500
+  var nodeCharge = -150
   var verticalSpace = 150
   var linkStrengthArray = [0.5, 0.2, 0.05]
 
@@ -44,7 +44,7 @@
   var maxDepth = 0
 
   var showLevels = false
-  var showLinkNodes = true
+  var showLinkNodes = false
 
   function init (graph) {
     svg.selectAll('*').remove()
@@ -62,14 +62,27 @@
 
     /**
      * To prevent Node-Edge overlap, we insert these
-     * linkNodes that essentially provide charge to edges, centered
-     * at their mid-point.
+     * linkNodes that essentially provide charge to edges.
+     * The charges are distributed evenly along the length
+     * of the edge (both the edge length and linkNode position
+     * are functions of the depth difference)
+     * e.g:
+     * [1 -> 5] => [1 -> 2 -> 3 -> 4 -> 5]
+     * [1 -> 2] => [1 -> 2]
      */
-    graph.linkNodes = graph.links.map(function (d) {
-      return {
-        isLinkNode: true,
-        source: graph.nodes[d.source],
-        target: graph.nodes[d.target]
+    graph.linkNodes = []
+    graph.links.forEach(function (d) {
+      var sourceNode = graph.nodes[d.source]
+      var targetNode = graph.nodes[d.target]
+      var depthDiff = targetNode.depth - sourceNode.depth
+      // LinkNodes include neither starting nor ending depth
+      for (var i = 1; i < depthDiff; ++i) {
+        graph.linkNodes.push({
+          isLinkNode: true,
+          markerPosition: i * 1.0 / depthDiff,
+          source: sourceNode,
+          target: targetNode
+        })
       }
     })
 
@@ -82,8 +95,9 @@
         return depthDiff * verticalSpace
       })
       .linkStrength(function (d) {
-        // Beyond 3 levels, the link strength parameter
-        // is completely ineffective.
+        /* Beyond 3 levels, the link strength parameter
+        is completely ineffective. This means the layout
+        has complete control over the exact link distance */
         var depthDiff = d.target.depth - d.source.depth
         return (
           (depthDiff < linkStrengthArray.length)
@@ -233,8 +247,13 @@
   }
 
   function transformLinkNode (d) {
-    var dx = (d.source.x + d.target.x) * 0.5
-    var dy = (d.source.y + d.target.y) * 0.5
+    // x + (y - x) * p
+    var delta = {
+      x: d.target.x - d.source.x,
+      y: d.target.y - d.source.y
+    }
+    var dx = d.source.x + delta.x * d.markerPosition
+    var dy = d.source.y + delta.y * d.markerPosition
     return 'translate(' + dx + ',' + dy + ')'
   }
 
