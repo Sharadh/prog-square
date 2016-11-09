@@ -22,8 +22,8 @@
 /* global d3 */
 
 (function () {
-  var width = 640
-  var height = 480
+  var width = 1024
+  var height = 768
 
   var svg = d3.select('body').append('svg')
     .attr('width', width)
@@ -55,8 +55,8 @@
       .attr('refX', '10')
       .attr('refY', '6')
       .attr('orient', 'auto')
-      .attr('markerWidth', '5')
-      .attr('markerHeight', '5')
+      .attr('markerWidth', '3')
+      .attr('markerHeight', '3')
       .append('path')
         .attr('d', 'M0,0L11,6L0,11')
 
@@ -142,7 +142,7 @@
         .data(graph.links)
         .enter().append('path')
           .attr('class', 'link')
-          .attr('marker-end', 'url(#program)')
+          .attr('marker-end', 'none')
 
     linkNodes = svg
       .append('g')
@@ -186,11 +186,23 @@
   function handleNodeMouseOver (d) {
     d3.select(this).attr('class', 'node active')
     d3.select('#label-' + d.id).attr('display', 'inherit')
+    d3.selectAll('.link')
+      .filter(function (l) {
+        return l.source.id === d.id || l.target.id === d.id
+      })
+      .attr('class', 'link active')
+      .attr('marker-end', 'url(#program)')
   }
 
   function handleNodeMouseOut (d) {
     d3.select(this).attr('class', 'node')
     d3.select('#label-' + d.id).attr('display', 'none')
+    d3.selectAll('.link')
+      .filter(function (l) {
+        return l.source.id === d.id || l.target.id === d.id
+      })
+      .attr('class', 'link')
+      .attr('marker-end', 'none')
   }
 
   function linkLine (d) {

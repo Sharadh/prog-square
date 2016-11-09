@@ -11,12 +11,17 @@
 
 .link {
     fill: none;
-    stroke: #777;
+    stroke: #efefef;
     stroke-width: 2px;
 }
 
+.link.active {
+    stroke: #777;
+    stroke-width: 3px;
+}
+
 .link-node {
-    fill: #777;
+    fill: #efefef;
 }
 
 .level-connector {
