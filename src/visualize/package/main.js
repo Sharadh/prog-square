@@ -187,6 +187,7 @@
     d3.select(this).attr('class', 'node active')
     d3.select('#label-' + d.id).attr('display', 'inherit')
     d3.selectAll('.link')
+      .attr('class', 'link inactive')
       .filter(function (l) {
         return l.source.id === d.id || l.target.id === d.id
       })
@@ -198,9 +199,6 @@
     d3.select(this).attr('class', 'node')
     d3.select('#label-' + d.id).attr('display', 'none')
     d3.selectAll('.link')
-      .filter(function (l) {
-        return l.source.id === d.id || l.target.id === d.id
-      })
       .attr('class', 'link')
       .attr('marker-end', 'none')
   }
