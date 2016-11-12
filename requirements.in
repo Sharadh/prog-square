@@ -1,5 +1,6 @@
 click
 flake8
+flask
 ipython
 nose
 pep8

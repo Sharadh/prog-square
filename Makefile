@@ -1,5 +1,6 @@
 VENV_DIR=./venv
 VENV_ACTIVATE_SCRIPT=$(VENV_DIR)/bin/activate
+PIP_VERSION=9.0.1
 SOURCE?='data/practice-python'
 DEST?=''
 
@@ -10,7 +11,7 @@ ifeq ("","$(wildcard "$(VENV_ACTIVATE_SCRIPT)")")
 	@virtualenv $(VENV_DIR)
 	@\
 		. "$(VENV_ACTIVATE_SCRIPT)"; \
-		pip install pip==8.1.1; \
+		pip install pip==$(PIP_VERSION); \
 		pip install pip-tools
 endif
 
