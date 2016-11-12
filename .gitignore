@@ -54,6 +54,8 @@ _reading
 *.sublime-project
 *.sublime-workspace
 *output.json
+*manifest.json
 node_modules
 
 src/visualize/package/graph.json
+src/visualize/package/manifest.json

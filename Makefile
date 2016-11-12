@@ -3,6 +3,7 @@ VENV_ACTIVATE_SCRIPT=$(VENV_DIR)/bin/activate
 PIP_VERSION=9.0.1
 SOURCE?='data/practice-python'
 DEST?=''
+MANIFEST?=''
 
 default: run
 
@@ -45,11 +46,11 @@ test: install
 .PHONY: install reinstall lint clean console test
 
 run: install
-	@. $(VENV_ACTIVATE_SCRIPT); cd src; python cli.py order $(SOURCE) -o $(DEST)
+	@. $(VENV_ACTIVATE_SCRIPT); cd src; python cli.py order $(SOURCE) -o $(DEST) -m $(MANIFEST)
 
 visualize: install
 	@. $(VENV_ACTIVATE_SCRIPT); cd src;\
-	 python cli.py order $(SOURCE) -o 'src/visualize/package/graph.json'
+	 python cli.py order $(SOURCE) -o 'src/visualize/package/graph.json' -m 'src/visualize/package/manifest.json'
 	@. $(VENV_ACTIVATE_SCRIPT); cd src/visualize;\
 	 python main.py
 

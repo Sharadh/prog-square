@@ -79,6 +79,10 @@ class ProgramMetaGroup(ProgramMeta):
             )
 
     @property
+    def filepath(self):
+        return ';'.join([program.filepath for program in self.programs])
+
+    @property
     def counts(self):
         return self.delegate.counts
 

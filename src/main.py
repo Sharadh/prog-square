@@ -66,9 +66,9 @@ def process(path_to_dir, debug):
         programs.append(meta)
 
     programs = decompose_to_scc(programs)
-    for program_meta in programs:
-        vertex_id = g.add_vertex(program_meta)
-        program_to_vertex[program_meta.pid] = vertex_id
+    for program in programs:
+        vertex_id = g.add_vertex(program)
+        program_to_vertex[program.pid] = vertex_id
 
     for i in xrange(len(programs)):
         for j in xrange(i + 1, len(programs)):
@@ -120,8 +120,10 @@ def graph_to_d3_dict(graph):
                 )
 
     data = {'nodes': [], 'links': []}
+    filepaths = {}
     for vid in ordered_graph:
         vertex = graph.V[vid]
+        filepaths[new_ids[vertex.uid]] = vertex.data.filepath
         data['nodes'].append({
             'id': new_ids[vertex.uid],
             'name': vertex.data.name,
@@ -134,4 +136,4 @@ def graph_to_d3_dict(graph):
                 'target': new_ids[to_vertex.uid]
             })
 
-    return data
+    return data, filepaths
