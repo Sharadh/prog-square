@@ -15,6 +15,9 @@
  * Level-ed Layout
  * http://bl.ocks.org/rmarimon/1079724
  *
+ * Pan/Zoom
+ * https://bl.ocks.org/mbostock/6123708
+ *
  * Future:
  * http://stackoverflow.com/questions/23986466/d3-force-layout-linking-nodes-by-name-instead-of-index
  */
@@ -22,12 +25,21 @@
 /* global d3 */
 
 (function () {
-  var width = 1024
-  var height = 768
+  var layoutWidth = 1024
+  var layoutHeight = 768
 
-  var svg = d3.select('body').append('svg')
-    .attr('width', width)
-    .attr('height', height)
+  var zoom = d3.behavior.zoom()
+    .scaleExtent([0.2, 2])
+    .on('zoom', zoomed)
+
+  var svg = d3.select('#svg-frame').append('svg')
+    .attr('width', '100%')
+    .attr('height', '100%')
+    .append('g')
+      .attr('transform', 'translate(0,0)')
+      .call(zoom)
+
+  var container = null
 
   var nodeRadius = 10
   var linkNodeRadius = 2
@@ -39,12 +51,16 @@
   var nodes = null
   var linkNodes = null
   var links = null
-  var levels = null
   var names = null
   var maxDepth = 0
 
-  var showLevels = false
   var showLinkNodes = false
+
+  function zoomed () {
+    container.attr(
+      'transform', 'translate(' + d3.event.translate + ')scale(' + d3.event.scale + ')'
+    )
+  }
 
   function init (graph) {
     svg.selectAll('*').remove()
@@ -59,6 +75,21 @@
       .attr('markerHeight', '3')
       .append('path')
         .attr('d', 'M0,0L11,6L0,11')
+
+    /**
+     * An element that represents the "canvas" and captures events.
+     * Without this, events would pass through when the mouse is not
+     * over any of our nodes, links, etc
+     */
+    svg.append('rect')
+      .attr('width', '100%')
+      .attr('height', '100%')
+      .attr('class', 'canvas-bg')
+      .style('fill', 'none')
+      .style('pointer-events', 'all')
+
+    /** Putting all our display objects inside a container helps pan/zoom */
+    container = svg.append('g')
 
     /**
      * To prevent Node-Edge overlap, we insert these
@@ -87,7 +118,7 @@
     })
 
     force = d3.layout.force()
-      .size([width, height])
+      .size([layoutWidth, layoutHeight])
       .nodes(graph.nodes.concat(graph.linkNodes))
       .links(graph.links)
       .linkDistance(function (d) {
@@ -123,19 +154,7 @@
       })
     }
 
-    levels = svg
-      .append('g')
-      .attr('display', showLevels ? 'inherit' : 'none')
-      .attr('id', 'g-levels')
-        .selectAll('.level-connector')
-        .data(depthData)
-        .enter().append('path')
-          .attr('class', 'level-connector')
-          .attr('id', function (d) {
-            return 'level-' + d.depth
-          })
-
-    links = svg
+    links = container
       .append('g')
       .attr('id', 'g-links')
         .selectAll('.link')
@@ -144,7 +163,7 @@
           .attr('class', 'link')
           .attr('marker-end', 'none')
 
-    linkNodes = svg
+    linkNodes = container
       .append('g')
       .attr('display', showLinkNodes ? 'inherit' : 'none')
       .attr('id', 'g-link-nodes')
@@ -154,7 +173,7 @@
           .attr('class', 'link-node')
           .attr('r', linkNodeRadius)
 
-    nodes = svg
+    nodes = container
       .append('g')
       .attr('id', 'g-nodes')
         .selectAll('.node')
@@ -168,7 +187,7 @@
           .on('mouseover', handleNodeMouseOver)
           .on('mouseout', handleNodeMouseOut)
 
-    names = svg
+    names = container
       .append('g')
       .attr('id', 'g-node-labels')
         .selectAll('text')
@@ -225,33 +244,6 @@
       'L' + targetX + ',' + targetY
   }
 
-  function levelLine (d) {
-    var leadingOffset = 50
-    var sortedCoords = d.nodes.map(function (node) {
-      return {x: node.x, y: node.y}
-    }).sort(function (first, second) {
-      return first.x - second.x
-    })
-
-    if (!sortedCoords.length) {
-      return ''
-    }
-
-    var pathSpec = []
-    var eachPt = sortedCoords.shift()
-    pathSpec.push('M' + 0 + ',' + height / 2.0)
-    pathSpec.push('L' + (eachPt.x - leadingOffset) + ',' + eachPt.y)
-    while (sortedCoords.length) {
-      eachPt = sortedCoords.shift()
-      pathSpec.push('L' + (eachPt.x - leadingOffset) + ',' + eachPt.y)
-    }
-    pathSpec.push('L' + (eachPt.x + leadingOffset) + ',' + eachPt.y)
-    pathSpec.push('L' + width + ',' + height / 2.0)
-
-    var pathSpecStr = pathSpec.join(' ')
-    return pathSpecStr
-  }
-
   function transform (d) {
     return 'translate(' + d.x + ',' + d.y + ')'
   }
@@ -278,7 +270,6 @@
     names.attr('transform', transform)
     links.attr('d', linkLine)
     linkNodes.attr('transform', transformLinkNode)
-    levels.attr('d', levelLine)
   }
 
   d3.json('graph.json', function (err, json) {

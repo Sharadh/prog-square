@@ -36,6 +36,16 @@
     stroke-dasharray: 0,2 1;   
 }
 
+.canvas-bg {
+    fill: #fff;
+}
+
+#svg-frame {
+    width: 100%;
+    height: 800px;
+    border: solid 1px #eee;
+}
+
 marker#program {
     fill: #777;
 }
