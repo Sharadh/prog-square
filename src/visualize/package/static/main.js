@@ -272,7 +272,7 @@
     linkNodes.attr('transform', transformLinkNode)
   }
 
-  d3.json('graph.json', function (err, json) {
+  d3.json('graph/default', function (err, json) {
     if (err) {
       console.error(err)
       return
