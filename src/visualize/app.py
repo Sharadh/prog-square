@@ -1,3 +1,5 @@
+import json
+
 from flask import (
     Flask,
     send_file,
@@ -19,3 +21,12 @@ def resources(path):
 @app.route('/graph/default')
 def default():
     return send_file('./package/graph.json')
+
+
+@app.route('/graph/default/snippet/<int:program_id>')
+def snippet(program_id):
+    with open('./package/manifest.json', 'r') as manifest_file:
+        manifest = json.load(manifest_file)
+    program_filepath = manifest[str(program_id)]
+    app.logger.info("snippet({}) --> {}".format(program_id, program_filepath))
+    return send_file(program_filepath)
