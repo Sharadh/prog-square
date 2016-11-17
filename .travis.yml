@@ -4,4 +4,5 @@ python:
 before_install:
   pip install --upgrade pip==9.0.1
 # command to run tests
-script: make lint
+script:
+  . ./lint.sh

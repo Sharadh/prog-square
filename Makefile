@@ -31,8 +31,7 @@ reinstall:
 	@make install
 
 lint: install 
-	@echo "Running pep8..."; . $(VENV_ACTIVATE_SCRIPT); pep8 src/ && echo "OK!"
-	@echo "Running flake8..."; . $(VENV_ACTIVATE_SCRIPT); flake8 src/ && echo "OK!"
+	@. $(VENV_ACTIVATE_SCRIPT); . './lint.sh'
 
 clean:
 	@find src/ -iname "*.pyc" -exec rm {} \;
