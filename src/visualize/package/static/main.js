@@ -3,7 +3,10 @@
   let Controller = function () {
     this.state = {
       graph: {},
-      selection: []
+      selection: {
+        id: null,
+        snippet: null
+      }
     }
 
     this.initialize = function (graphEl, snippetEl) {
@@ -25,22 +28,40 @@
       })
     }.bind(this)
 
+    this.onSnippetLoad = function (selectionDetails, err, xhr) {
+      if (err) {
+        console.error(err)
+        return
+      }
+      selectionDetails.snippet = xhr.response
+      this.setState({
+        graph: this.state.graph,
+        selection: selectionDetails
+      })
+    }
+
     this.onMessage = function (message, data) {
       var parts = message.split(':')
       var entity = parts[0]
       var command = parts[1]
 
       if (entity === 'graph') {
-        let newSelection
-        if (command === 'select') {
-          newSelection = [data.node_id]
-        } else if (command === 'deselect') {
-          newSelection = []
+        let newSelection = {
+          id: null,
+          snippet: null
         }
-        this.setState({
-          graph: this.state.graph,
-          selection: newSelection
-        })
+        if (command === 'select') {
+          newSelection.id = data.node_id
+          d3.xhr(
+            'graph/default/snippet/' + newSelection.id,
+            'text/plain',
+            this.onSnippetLoad.bind(this, newSelection))
+        } else if (command === 'deselect') {
+          // this.setState({
+          //   graph: this.state.graph,
+          //   selection: newSelection
+          // })
+        }
       } else if (entity === 'snippet') {
         console.log('snippet says ' + command)
       }

@@ -56,8 +56,16 @@ body {
   padding-bottom: 30px;
 }
 
+.main.container {
+    max-width: 800px;
+}
+
 .graph-display {
     height: 400px;
+}
+
+.graph-display > * {
+    padding: 0;
 }
 
 #svg-frame {
@@ -65,5 +73,13 @@ body {
     border: solid 1px #eee;
 }
 
-#code-snippet {
+.program-details {
+}
+
+.program-details > * {
+    padding: 0;
+}
+
+#code-snippet, #code-snippet > * {
+    min-height: 400px;
 }
