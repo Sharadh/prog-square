@@ -1,13 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <title>Program Order Visualization</title>
-        <script type="text/javascript" src="https://d3js.org/d3.v3.min.js"></script>
-        <link rel="stylesheet" type="text/css" href="static/svgstyle.css">
-    </head>
-    <body>
-        <div id="svg-frame"></div>
-        <script src="static/main.js" type="text/javascript"></script>
-    </body>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Program Order Visualization</title>
+    
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- d3.js -->
+    <script type="text/javascript" src="https://d3js.org/d3.v3.min.js"></script>
+    
+    <!-- Project stylesheet -->
+    <link rel="stylesheet" type="text/css" href="static/style.css">
+
+    <!-- Load project sources -->
+    <script src="static/main.js" type="text/javascript"></script>
+    <script src="static/graph_view.js" type="text/javascript"></script>
+    <script src="static/snippet_view.js" type="text/javascript"></script>
+  </head>
+  <body>
+    <div class="container" role="main">
+      <div class="row">
+        <h1>Program Ordering</h1>
+      </div>
+      <div class="row graph-display">
+        <div id="svg-frame" class="col-sm-12 col-md-8"></div>
+        <div id="code-snippet" class="col-sm-12 col-md-4"></div>
+      </div>
+    </div>
+
+    <!-- Load project namespace -->
+    <script type="text/javascript">
+    /* eslint-disable */
+    let DOM = {
+      graph: document.getElementById('svg-frame'),
+      snippet: document.getElementById('code-snippet')
+    }
+    window.p2.initialize(DOM.graph, DOM.snippet)
+    </script>
+  </body>
 </html>
