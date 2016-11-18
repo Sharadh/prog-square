@@ -80,6 +80,5 @@ body {
     padding: 0;
 }
 
-#code-snippet, #code-snippet > * {
-    min-height: 400px;
+#code-snippet {
 }

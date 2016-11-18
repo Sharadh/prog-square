@@ -1,4 +1,4 @@
-/* global d3 */
+/* global d3 hljs */
 (function () {
   var SnippetView = function (el, trigger) {
     this.onStateChanged = function (newState, oldState) {
@@ -12,10 +12,16 @@
       this.update(nodeDetails[0], newState.selection)
     }
 
-    var codeBox = d3.select(el).append('pre')
+    var codeBlock = d3.select(el)
+      .append('pre')
+        .style('padding', '0px')
+        .style('background', 'transparent')
+      .append('code')
+        .style('height', '100%')
     this.update = function (nodeDetails, selectionDetails) {
       nodeDetails = nodeDetails || {name: ''}
-      codeBox.text(selectionDetails.snippet)
+      codeBlock.text(selectionDetails.snippet)
+      hljs.highlightBlock(codeBlock.node())
     }
   }
 
