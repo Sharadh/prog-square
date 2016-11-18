@@ -31,7 +31,7 @@
   i.e, items are held in closure. When needed, actually OOP-ify this
   with proto and methods and such
    */
-  var GraphView = function (el) {
+  var GraphView = function (el, trigger) {
     // Note: This only affects initial center-of-gravity of layout
     var layoutWidth = 800
     var layoutHeight = 600
@@ -220,6 +220,7 @@
         })
         .attr('class', 'link active')
         .attr('marker-end', 'url(#program)')
+      trigger('graph:select', {node_id: d.id})
     }
 
     function handleNodeMouseOut (d) {
@@ -228,6 +229,7 @@
       d3.selectAll('.link')
         .attr('class', 'link')
         .attr('marker-end', 'none')
+      trigger('graph:deselect', {node_id: d.id})
     }
 
     function linkLine (d) {
@@ -280,14 +282,13 @@
       linkNodes.attr('transform', transformLinkNode)
     }
 
-    d3.json('graph/default', function (err, json) {
-      if (err) {
-        console.error(err)
+    this.onStateChanged = function (newState, oldState) {
+      if (newState.graph === oldState.graph) {
         return
       }
-      init(json)
+      init(newState.graph)
       force.start()
-    })
+    }
   }
 
   window.p2.GraphView = GraphView
