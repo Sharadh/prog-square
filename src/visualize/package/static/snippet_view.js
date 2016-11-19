@@ -12,17 +12,25 @@
       this.update(nodeDetails[0], newState.selection)
     }
 
-    var codeBlock = d3.select(el)
+    this.el = d3.select(el)
+    this.meta = this.el
+      .append('div')
+        .attr('class', 'snippet-meta col-sm-12')
+    this.title = this.meta
+      .append('h3')
+    this.codeBlock = this.el
       .append('pre')
+        .attr('class', 'code-snippet col-sm-12')
         .style('padding', '0px')
         .style('background', 'transparent')
       .append('code')
-        .style('height', '100%')
+
     this.update = function (nodeDetails, selectionDetails) {
       nodeDetails = nodeDetails || {name: ''}
-      codeBlock.text(selectionDetails.snippet)
-      hljs.highlightBlock(codeBlock.node())
-    }
+      this.title.text(nodeDetails.name)
+      this.codeBlock.text(selectionDetails.snippet)
+      hljs.highlightBlock(this.codeBlock.node())
+    }.bind(this)
   }
 
   window.p2.SnippetView = SnippetView

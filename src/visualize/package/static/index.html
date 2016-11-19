@@ -27,23 +27,26 @@
   </head>
   <body>
     <div class="main container" role="main">
-      <div class="row">
-        <h1>Program Ordering</h1>
+      <div class="row header">
+        <div class="col-sm-12">
+          <h1 class="page-heading">Program Ordering</h1>
+          <span class="page-subheading">
+          </span>
+        </div>
       </div>
-      <div class="row graph-display">
-        <div id="svg-frame" class="col-sm-12 col-md-12"></div>
+      <div id="graph-display" class="row">
+        <div id="svg-frame" class="col-sm-12"></div>
       </div>
-      <div class="row program-details">
-        <div id="code-snippet" class="col-sm-12 col-md-12"></div>
+      <div id="snippet-details" class="row">
       </div>
     </div>
 
-    <!-- Load project namespace -->
+    <!-- Load project entry point -->
     <script type="text/javascript">
     /* eslint-disable */
     let DOM = {
       graph: document.getElementById('svg-frame'),
-      snippet: document.getElementById('code-snippet')
+      snippet: document.getElementById('snippet-details')
     }
     window.p2.initialize(DOM.graph, DOM.snippet)
     </script>

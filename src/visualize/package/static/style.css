@@ -50,6 +50,11 @@ text {
     text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, 0 -1px 0 #fff, -1px 0 0 #fff;
 }
 
+/* Modify bootstrap's padding */
+.row > * {
+    padding: 0;
+}
+
 /* HTML Related Styles */
 body {
   padding-top: 50px;
@@ -60,12 +65,8 @@ body {
     max-width: 800px;
 }
 
-.graph-display {
+#graph-display {
     height: 400px;
-}
-
-.graph-display > * {
-    padding: 0;
 }
 
 #svg-frame {
@@ -73,12 +74,9 @@ body {
     border: solid 1px #eee;
 }
 
-.program-details {
+#program-details {
 }
 
-.program-details > * {
-    padding: 0;
-}
-
-#code-snippet {
+.code-snippet {
+    border: none;
 }
