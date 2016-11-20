@@ -27,8 +27,13 @@
 
     this.update = function (nodeDetails, selectionDetails) {
       nodeDetails = nodeDetails || {name: ''}
-      this.title.text(nodeDetails.name)
-      this.codeBlock.text(selectionDetails.snippet)
+      let snippetTitle, snippetCode
+      if (selectionDetails.snippet) {
+        snippetTitle = selectionDetails.snippet.meta.name
+        snippetCode = selectionDetails.snippet.data
+      }
+      this.title.text(snippetTitle)
+      this.codeBlock.text(snippetCode)
       hljs.highlightBlock(this.codeBlock.node())
     }.bind(this)
   }

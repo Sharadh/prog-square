@@ -28,12 +28,12 @@
       })
     }.bind(this)
 
-    this.onSnippetLoad = function (selectionDetails, err, xhr) {
+    this.onSnippetLoad = function (selectionDetails, err, json) {
       if (err) {
         console.error(err)
         return
       }
-      selectionDetails.snippet = xhr.response
+      selectionDetails.snippet = json
       this.setState({
         graph: this.state.graph,
         selection: selectionDetails
@@ -52,9 +52,8 @@
         }
         if (command === 'select') {
           newSelection.id = data.node_id
-          d3.xhr(
+          d3.json(
             'graph/default/snippet/' + newSelection.id,
-            'text/plain',
             this.onSnippetLoad.bind(this, newSelection))
         } else if (command === 'deselect') {
           // this.setState({
