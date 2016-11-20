@@ -40,6 +40,6 @@ def snippet(program_id):
     meta, source = split_meta_source(data)
     response_data = {
         'meta': meta,
-        'data': source
+        'data': source.strip()
     }
     return jsonify(response_data)
