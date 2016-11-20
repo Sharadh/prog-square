@@ -1,0 +1,14 @@
+---
+created_by: p2-contributor
+created_on: 1478663747.0
+language: py
+name: 15 Str Format
+references:
+- https://www.codecademy.com/learn/python
+...
+name = raw_input("What is your name?")
+quest = raw_input("What is your quest?")
+color = raw_input("What is your favorite color?")
+
+print "Ah, so your name is %s, your quest is %s, " \
+"and your favorite color is %s." % (name, quest, color)

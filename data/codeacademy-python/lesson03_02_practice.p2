@@ -1,0 +1,19 @@
+---
+created_by: p2-contributor
+created_on: 1478663747.0
+language: py
+name: 02 Practice
+references:
+- https://www.codecademy.com/learn/python
+...
+# Assign your variables below, each on its own line!
+
+caesar = "Graham"
+praline = "John"
+viking = "Teresa"
+
+# Put your variables above this line
+
+print caesar
+print praline
+print viking

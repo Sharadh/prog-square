@@ -1,0 +1,14 @@
+---
+created_by: p2-contributor
+created_on: 1478663747.0
+language: py
+name: 16 Type
+references:
+- https://www.codecademy.com/learn/python
+...
+# Print out the types of an integer, a float,
+# and a string on separate lines below.
+
+print type(42)
+print type(42.00)
+print type('Forty-Two')

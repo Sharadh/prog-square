@@ -1,0 +1,13 @@
+---
+created_by: p2-contributor
+created_on: 1478663747.0
+language: py
+name: ' 10 Modulo'
+references:
+- https://www.codecademy.com/learn/python
+...
+# Set spam equal to 1 using modulo on line 3!
+
+spam = 3 % 2
+
+print spam

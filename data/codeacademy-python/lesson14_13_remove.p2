@@ -1,0 +1,10 @@
+---
+created_by: p2-contributor
+created_on: 1478663747.0
+language: py
+name: 13 Remove
+references:
+- https://www.codecademy.com/learn/python
+...
+backpack = ['xylophone', 'dagger', 'tent', 'bread loaf']
+backpack.remove('dagger')

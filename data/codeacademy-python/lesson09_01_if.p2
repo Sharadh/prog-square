@@ -1,0 +1,18 @@
+---
+created_by: p2-contributor
+created_on: 1478663747.0
+language: py
+name: 01 If
+references:
+- https://www.codecademy.com/learn/python
+...
+def using_control_once():
+    if True:
+        return "Success #1"
+
+def using_control_again():
+    if True:
+        return "Success #2"
+
+print using_control_once()
+print using_control_again()

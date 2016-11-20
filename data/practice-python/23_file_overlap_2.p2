@@ -1,0 +1,23 @@
+---
+created_by: p2-contributor
+created_on: 1478663747.0
+language: py
+name: File Overlap 2
+references:
+- http://www.practicepython.org/
+retrieved_from: 'http://www.practicepython.org/solution/2014/12/25/23-file-overlap-solutions.html'
+...
+def filetolistofints(filename):
+  list_to_return = []
+  with open(filename) as f:
+    line = f.readline()
+    while line:
+      list_to_return.append(int(line))
+      line = f.readline()
+  return list_to_return
+
+primeslist = filetolistofints('primenumbers.txt')
+happieslist = filetolistofints('happynumbers.txt')
+
+overlaplist = [elem for elem in primeslist if elem in happieslist]
+print(overlaplist)

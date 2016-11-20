@@ -1,0 +1,11 @@
+---
+created_by: p2-contributor
+created_on: 1478663747.0
+language: py
+name: 11 Here Be Dragons
+references:
+- https://www.codecademy.com/learn/python
+...
+import math            # Imports the math module
+everything = dir(math) # Sets everything to a list of things from math
+print everything       # Prints 'em all!

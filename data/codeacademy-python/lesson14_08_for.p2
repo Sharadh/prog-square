@@ -1,0 +1,13 @@
+---
+created_by: p2-contributor
+created_on: 1478663747.0
+language: py
+name: 08 For
+references:
+- https://www.codecademy.com/learn/python
+...
+my_list = [1,9,3,8,5,7]
+
+for number in my_list:
+    # Your code here
+    print 2 * number

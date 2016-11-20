@@ -1,0 +1,20 @@
+---
+created_by: p2-contributor
+created_on: 1478663747.0
+language: py
+name: 04 Arrivals Length
+references:
+- https://www.codecademy.com/learn/python
+...
+suitcase = [] 
+suitcase.append("sunglasses")
+
+# Your code here!
+suitcase.append('swimming trunks')
+suitcase.append('swimming goggles')
+suitcase.append('sunscreen')
+
+list_length = len(suitcase) # Set this to the length of suitcase
+
+print "There are %d items in the suitcase." % (list_length)
+print suitcase

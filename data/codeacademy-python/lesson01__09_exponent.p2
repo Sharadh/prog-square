@@ -1,0 +1,13 @@
+---
+created_by: p2-contributor
+created_on: 1478663747.0
+language: py
+name: ' 09 Exponent'
+references:
+- https://www.codecademy.com/learn/python
+...
+# Set eggs equal to 100 using exponentiation on line 3!
+
+eggs = 10 ** 2
+
+print eggs

@@ -1,0 +1,24 @@
+---
+created_by: p2-contributor
+created_on: 1478663747.0
+language: py
+name: 02 Compare
+references:
+- https://www.codecademy.com/learn/python
+...
+# Create comparative statements as appropriate on the lines below!
+
+# Make me true!
+bool_one = 3 < 5  # We already did this one for you!
+
+# Make me false!
+bool_two = 4 > 5
+
+# Make me true!
+bool_three = 4 < 5
+
+# Make me false!
+bool_four = 1 == 2
+
+# Make me true!
+bool_five = 1 == (2 - 1)

@@ -1,0 +1,12 @@
+---
+created_by: p2-contributor
+created_on: 1478663747.0
+language: py
+name: ' 02 Booleans'
+references:
+- https://www.codecademy.com/learn/python
+...
+# Set the variables to the values listed in the instructions!
+my_int = 7
+my_float = 1.23
+my_bool = True

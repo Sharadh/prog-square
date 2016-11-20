@@ -1,0 +1,20 @@
+---
+created_by: p2-contributor
+created_on: 1478183226.0
+language: py
+name: List Duplicates 1
+references:
+- http://www.practicepython.org/
+retrieved_from: 'http://www.practicepython.org/solution/2014/05/21/14-list-remove-duplicates-solutions.html'
+...
+# this one uses a for loop
+def dedupe_v1(x):
+  y = []
+  for i in x:
+    if i not in y:
+      y.append(i)
+  return y
+
+a = [1,2,3,4,3,2,1]
+print a
+print dedupe_v1(a)

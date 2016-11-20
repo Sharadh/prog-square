@@ -1,0 +1,29 @@
+---
+created_by: p2-contributor
+created_on: 1478663747.0
+language: py
+name: File Overlap 1
+references:
+- http://www.practicepython.org/
+retrieved_from: 'http://www.practicepython.org/solution/2014/12/25/23-file-overlap-solutions.html'
+...
+primeslist = []
+with open('primenumbers.txt') as primesfile:
+  line = primesfile.readline()
+  while line:
+    primeslist.append(int(line))
+    line = primesfile.readline()
+
+happieslist = []
+with open('happynumbers.txt') as happiesfile:
+  line = happiesfile.readline()
+  while line:
+    happieslist.append(int(line))
+    line = happiesfile.readline()
+
+overlaplist = []
+for elem in primeslist:
+  if elem in happieslist:
+    overlaplist.append(elem)
+    
+print(overlaplist)

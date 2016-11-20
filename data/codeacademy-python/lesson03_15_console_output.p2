@@ -1,0 +1,13 @@
+---
+created_by: p2-contributor
+created_on: 1478663747.0
+language: py
+name: 15 Console Output
+references:
+- https://www.codecademy.com/learn/python
+...
+# Write your code below, starting on line 3!
+
+my_string = "Hello World!"
+print len(my_string)
+print my_string.upper()

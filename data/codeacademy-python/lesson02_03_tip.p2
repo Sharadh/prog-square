@@ -1,0 +1,13 @@
+---
+created_by: p2-contributor
+created_on: 1478663747.0
+language: py
+name: 03 Tip
+references:
+- https://www.codecademy.com/learn/python
+...
+# You're almost there! Assign the tip variable on line 5.
+
+meal = 44.50
+tax = 0.0675
+tip = 15.0/100

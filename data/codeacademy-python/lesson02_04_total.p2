@@ -1,0 +1,18 @@
+---
+created_by: p2-contributor
+created_on: 1478663747.0
+language: py
+name: 04 Total
+references:
+- https://www.codecademy.com/learn/python
+...
+# Assign the variable total on line 8!
+
+meal = 44.50
+tax = 0.0675
+tip = 0.15
+
+meal = meal + meal * tax
+total = meal + meal * tip
+
+print("%.2f" % total)

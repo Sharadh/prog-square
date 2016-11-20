@@ -1,0 +1,11 @@
+---
+created_by: p2-contributor
+created_on: 1478663747.0
+language: py
+name: 06 Lower
+references:
+- https://www.codecademy.com/learn/python
+...
+parrot = "Norwegian Blue"
+
+print parrot.lower()

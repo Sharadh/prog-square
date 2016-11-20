@@ -1,0 +1,11 @@
+---
+created_by: p2-contributor
+created_on: 1478183226.0
+language: py
+name: List Ends
+references:
+- http://www.practicepython.org/
+retrieved_from: 'http://www.practicepython.org/solution/2014/05/15/12-list-ends-solutions.html'
+...
+def list_ends(a_list):
+    return [a_list[0], a_list[len(a_list)-1]]

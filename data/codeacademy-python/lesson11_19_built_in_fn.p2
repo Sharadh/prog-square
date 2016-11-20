@@ -1,0 +1,13 @@
+---
+created_by: p2-contributor
+created_on: 1478663747.0
+language: py
+name: 19 Built In Fn
+references:
+- https://www.codecademy.com/learn/python
+...
+def distance_from_zero(value):
+    if type(value) == int or type(value) == float:
+        return abs(value)
+    else:
+        return 'Nope'

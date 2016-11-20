@@ -1,0 +1,16 @@
+---
+created_by: p2-contributor
+created_on: 1478663747.0
+language: py
+name: 06 Practice
+references:
+- https://www.codecademy.com/learn/python
+...
+def cube(number):
+    return number ** 3
+
+def by_three(number):
+    if number % 3 == 0:
+        return cube(number)
+    else:
+        return False

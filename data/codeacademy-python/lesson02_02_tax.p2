@@ -1,0 +1,10 @@
+---
+created_by: p2-contributor
+created_on: 1478663747.0
+language: py
+name: 02 Tax
+references:
+- https://www.codecademy.com/learn/python
+...
+meal = 44.50
+tax = 6.75 / 100

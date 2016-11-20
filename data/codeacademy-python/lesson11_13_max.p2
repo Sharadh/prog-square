@@ -1,0 +1,13 @@
+---
+created_by: p2-contributor
+created_on: 1478663747.0
+language: py
+name: 13 Max
+references:
+- https://www.codecademy.com/learn/python
+...
+# Set maximum to the max value of any set of numbers on line 3!
+
+maximum = max([1, 3, 9, 2, 15, 4])
+
+print maximum

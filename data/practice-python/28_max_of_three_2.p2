@@ -1,0 +1,16 @@
+---
+created_by: p2-contributor
+created_on: 1478663747.0
+language: py
+name: Max Of Three 2
+references:
+- http://www.practicepython.org/
+retrieved_from: 'http://www.practicepython.org/solution/2016/07/16/28-max-of-three-solutions.html'
+...
+a = input("First number .: ")
+b = input("Second number .: ")
+c = input("Third Number.: ")
+e = (a,b,c)
+h = sorted(e)
+y = len(h) - 1
+print(h[y])

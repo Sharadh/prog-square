@@ -1,0 +1,13 @@
+---
+created_by: p2-contributor
+created_on: 1478663747.0
+language: py
+name: ' 05 Whitespace'
+references:
+- https://www.codecademy.com/learn/python
+...
+def spam():
+    eggs = 12
+    return eggs
+
+print spam()

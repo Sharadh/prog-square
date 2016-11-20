@@ -1,0 +1,23 @@
+---
+created_by: p2-contributor
+created_on: 1478663747.0
+language: py
+name: Max Of Three 3
+references:
+- http://www.practicepython.org/
+retrieved_from: 'http://www.practicepython.org/solution/2016/07/16/28-max-of-three-solutions.html'
+...
+def max_of_three(a,b,c):
+     max_3=0
+     if a>b:
+         #max_3=a
+         if a>c:
+             max_3=c
+         else:
+             max_3=a
+     else:
+          if b>c:
+             max_3=b
+          else:
+             max_3=c
+     return max_3

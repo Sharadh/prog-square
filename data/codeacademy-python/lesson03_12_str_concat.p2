@@ -1,0 +1,11 @@
+---
+created_by: p2-contributor
+created_on: 1478663747.0
+language: py
+name: 12 Str Concat
+references:
+- https://www.codecademy.com/learn/python
+...
+# Turn 3.14 into a string on line 3!
+
+print "The value of pi is around " + str(3.14)

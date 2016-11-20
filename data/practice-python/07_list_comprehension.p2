@@ -1,0 +1,15 @@
+---
+created_by: p2-contributor
+created_on: 1478183226.0
+language: py
+name: List Comprehension
+references:
+- http://www.practicepython.org/
+retrieved_from: 'http://www.practicepython.org/solution/2014/03/26/07-list-comprehensions-solutions.html'
+...
+__author__ = '[redacted]'
+
+a = [1, 4, 9, 16, 25, 36, 49, 64, 81, 100]
+b = [number for number in a if number % 2 == 0]
+
+print(b)

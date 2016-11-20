@@ -1,0 +1,22 @@
+---
+created_by: p2-contributor
+created_on: 1478183226.0
+language: py
+name: Check Primeness 3
+references:
+- http://www.practicepython.org/
+retrieved_from: 'http://www.practicepython.org/solution/2014/04/16/11-check-primality-functions-solutions.html'
+...
+num = int(raw_input('Insert a number: '))
+a = [x for x in range(2, num) if num % x == 0]
+
+def is_prime(n):
+    if num > 1:
+        if len(a) == 0:
+            print 'prime'
+        else:
+            print 'NOT prime'
+    else:
+        print 'NOT prime'
+    
+is_prime(num)

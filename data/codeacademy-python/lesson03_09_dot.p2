@@ -1,0 +1,12 @@
+---
+created_by: p2-contributor
+created_on: 1478663747.0
+language: py
+name: 09 Dot
+references:
+- https://www.codecademy.com/learn/python
+...
+ministry = "The Ministry of Silly Walks"
+
+print len(ministry)
+print ministry.upper()

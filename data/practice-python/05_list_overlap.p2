@@ -1,0 +1,17 @@
+---
+created_by: p2-contributor
+created_on: 1478183226.0
+language: py
+name: List Overlap
+references:
+- http://www.practicepython.org/
+retrieved_from: 'http://www.practicepython.org/solution/2014/03/19/05-list-overlap-solutions.html'
+...
+a = [1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89]
+b = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
+
+num = []
+for i in a:
+    if i in b and i not in num:
+        num.append(i)
+print(num)

@@ -1,0 +1,17 @@
+---
+created_by: p2-contributor
+created_on: 1478663747.0
+language: py
+name: 02 Function Junction
+references:
+- https://www.codecademy.com/learn/python
+...
+# Define your spam function starting on line 5. You
+# can leave the code on line 11 alone for now--we'll
+# explain it soon!
+def spam():
+    '''Print Eggs'''
+    print 'Eggs!'
+
+# Define the spam function above this line.
+spam()

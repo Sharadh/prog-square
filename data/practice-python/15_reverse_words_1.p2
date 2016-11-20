@@ -1,0 +1,15 @@
+---
+created_by: p2-contributor
+created_on: 1478183226.0
+language: py
+name: Reverse Words 1
+references:
+- http://www.practicepython.org/
+retrieved_from: 'http://www.practicepython.org/solution/2014/05/28/15-reverse-word-order-solutions.html'
+...
+def reverseWord(w):
+  return ' '.join(w.split()[::-1])
+
+# test code
+test1 = raw_input("Enter a sentence: ")
+print reverseWord(test1)

@@ -1,0 +1,17 @@
+---
+created_by: p2-contributor
+created_on: 1478663747.0
+language: py
+name: 05 Check
+references:
+- https://www.codecademy.com/learn/python
+...
+print 'Welcome to the Pig Latin Translator!'
+
+# Start coding here!
+original = raw_input('Enter a word: ')
+
+if len(original) > 0 and original.isalpha():
+    print original
+else:
+    print 'empty'

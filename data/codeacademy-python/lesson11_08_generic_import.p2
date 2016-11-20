@@ -1,0 +1,11 @@
+---
+created_by: p2-contributor
+created_on: 1478663747.0
+language: py
+name: 08 Generic Import
+references:
+- https://www.codecademy.com/learn/python
+...
+# Ask Python to print sqrt(25) on line 3.
+import math
+print math.sqrt(25)

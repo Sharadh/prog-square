@@ -1,0 +1,12 @@
+---
+created_by: p2-contributor
+created_on: 1478663747.0
+language: py
+name: 14 Str Format
+references:
+- https://www.codecademy.com/learn/python
+...
+string_1 = "Camelot"
+string_2 = "place"
+
+print "Let's not go to %s. 'Tis a silly %s." % (string_1, string_2)

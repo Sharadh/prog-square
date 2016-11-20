@@ -1,0 +1,11 @@
+---
+created_by: p2-contributor
+created_on: 1478663747.0
+language: py
+name: 11 Concat
+references:
+- https://www.codecademy.com/learn/python
+...
+# Print the concatenation of "Spam and eggs" on line 3!
+
+print "Spam " + "and " + "eggs"

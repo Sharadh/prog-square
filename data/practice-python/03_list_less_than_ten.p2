@@ -1,0 +1,20 @@
+---
+created_by: p2-contributor
+created_on: 1478183226.0
+language: py
+name: List Less Than Ten
+references:
+- http://www.practicepython.org/
+retrieved_from: 'http://www.practicepython.org/solution/2014/02/26/03-list-less-than-ten-solutions.html'
+...
+a = [1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89]
+
+num = int(raw_input("Choose a number: "))
+
+new_list = []
+
+for i in a:
+    if i < num:
+        new_list.append(i)
+
+print new_list

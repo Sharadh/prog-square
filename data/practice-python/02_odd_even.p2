@@ -1,0 +1,15 @@
+---
+created_by: p2-contributor
+created_on: 1478183226.0
+language: py
+name: Odd Even
+references:
+- http://www.practicepython.org/
+retrieved_from: 'http://www.practicepython.org/solution/2014/02/15/02-odd-or-even-solutions.html'
+...
+num = input("Enter a number: ")
+mod = num % 2
+if mod > 0:
+    print("You picked an odd number.")
+else:
+    print("You picked an even number.")

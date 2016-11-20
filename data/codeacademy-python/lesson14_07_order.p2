@@ -1,0 +1,16 @@
+---
+created_by: p2-contributor
+created_on: 1478663747.0
+language: py
+name: 07 Order
+references:
+- https://www.codecademy.com/learn/python
+...
+animals = ["aardvark", "badger", "duck", "emu", "fennec fox"]
+duck_index = animals.index('duck')   # Use index() to find "duck"
+
+# Your code here!
+animals.insert(duck_index, 'cobra')
+
+
+print animals # Observe what prints after the insert operation

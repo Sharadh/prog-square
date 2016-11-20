@@ -1,0 +1,13 @@
+---
+created_by: p2-contributor
+created_on: 1478183226.0
+language: py
+name: Character Input
+references:
+- http://www.practicepython.org/
+retrieved_from: 'http://www.practicepython.org/solution/2014/02/05/01-character-input-solutions.html'
+...
+name = input("What is your name: ")
+age = int(input("How old are you: "))
+year = str((2014 - age)+100)
+print(name + " will be 100 years old in the year " + year)

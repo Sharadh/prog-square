@@ -1,0 +1,15 @@
+---
+created_by: p2-contributor
+created_on: 1478663747.0
+language: py
+name: 17 Review Fn
+references:
+- https://www.codecademy.com/learn/python
+...
+def shut_down(s):
+    if s == 'yes':
+        return 'Shutting down'
+    elif s == 'no':
+        return 'Shutdown aborted'
+    else:
+        return 'Sorry'

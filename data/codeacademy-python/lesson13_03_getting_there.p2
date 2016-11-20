@@ -1,0 +1,20 @@
+---
+created_by: p2-contributor
+created_on: 1478663747.0
+language: py
+name: 03 Getting There
+references:
+- https://www.codecademy.com/learn/python
+...
+def hotel_cost(nights):
+    return 140 * nights
+
+def plane_ride_cost(city):
+    if city == 'Charlotte':
+        return 183
+    elif city == 'Tampa':
+        return 220
+    elif city == 'Pittsburgh':
+        return 222
+    elif city == 'Los Angeles':
+        return 475

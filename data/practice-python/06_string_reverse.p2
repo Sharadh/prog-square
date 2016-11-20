@@ -1,0 +1,21 @@
+---
+created_by: p2-contributor
+created_on: 1478183226.0
+language: py
+name: String Reverse
+references:
+- http://www.practicepython.org/
+retrieved_from: 'http://www.practicepython.org/solution/2014/03/19/06-string-lists-solutions.html'
+...
+def reverse(word):
+    x = ''
+    for i in range(len(word)):
+        x += word[len(word)-1-i]
+        return x
+
+word = input('give me a word:\n')
+x = reverse(word)
+if x == word:
+    print('This is a Palindrome')
+else:
+    print('This is NOT a Palindrome')

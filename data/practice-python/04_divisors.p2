@@ -1,0 +1,22 @@
+---
+created_by: p2-contributor
+created_on: 1478183226.0
+language: py
+name: Divisors
+references:
+- http://www.practicepython.org/
+retrieved_from: 'http://www.practicepython.org/solution/2014/03/05/04-divisors-solutions.html'
+...
+__author__ = '[redacted]'
+
+num = int(input("Please choose a number to divide: "))
+
+listRange = list(range(1,num+1))
+
+divisorList = []
+
+for number in listRange:
+    if num % number == 0:
+        divisorList.append(number)
+
+print(divisorList)

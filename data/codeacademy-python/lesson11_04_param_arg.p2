@@ -1,0 +1,13 @@
+---
+created_by: p2-contributor
+created_on: 1478663747.0
+language: py
+name: 04 Param Arg
+references:
+- https://www.codecademy.com/learn/python
+...
+def power(base, exponent):  # Add your parameters here!
+    result = base**exponent
+    print "%d to the power of %d is %d." % (base, exponent, result)
+
+power(37,4)  # Add your arguments here!
