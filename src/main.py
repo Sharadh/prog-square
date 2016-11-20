@@ -2,24 +2,20 @@ import ast
 import json
 import os
 
-import yaml
-
 from ast_visitors import CountingVisitor
 from disjoint_set import Forest
+from p2_convert import split_meta_source
 from program_info import ProgramInfo, ProgramInfoGroup
 from graph import Graph
 from graph_utils import topological_sort
 from utils import warn
 
 
-def get_file_meta(filepath):
+def get_program_info(filepath):
     file = open(filepath, 'r')
     data = file.read()
 
-    yaml_start = data.index('---')
-    yaml_end = data.index('...') + 3
-    meta = yaml.load(data[yaml_start:yaml_end])
-    source = data[yaml_end:]
+    meta, source = split_meta_source(data)
 
     root = ast.parse(source)
 
@@ -65,7 +61,7 @@ def process(path_to_dir, debug):
 
         filepath = os.path.join(path_to_dir, filename)
         try:
-            meta = get_file_meta(filepath)
+            meta = get_program_info(filepath)
         except SyntaxError as e:
             warn('Error processing "{}" at {}:{}\n{}'.format(
                 filename, e.lineno, e.offset, e.text))

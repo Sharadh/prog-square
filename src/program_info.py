@@ -1,6 +1,3 @@
-from os import path
-
-
 class ProgramInfo(object):
     COUNT = 0
     PROGRAMS = {}
@@ -28,7 +25,7 @@ class ProgramInfo(object):
 
     @property
     def name(self):
-        return path.splitext(path.basename(self.filepath))[0]
+        return self.meta['name']
 
     def __str__(self):
         return self.name
@@ -75,13 +72,11 @@ class ProgramInfoGroup(ProgramInfo):
 
     @property
     def name(self):
-        return '[{}]'.format(
-            ','.join([program.name for program in self.programs])
-            )
+        return self.delegate.name
 
     @property
     def filepath(self):
-        return ';'.join([program.filepath for program in self.programs])
+        return self.delegate.filepath
 
     @property
     def counts(self):

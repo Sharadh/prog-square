@@ -3,6 +3,14 @@ import os
 import yaml
 
 
+def split_meta_source(data):
+    yaml_start = data.index('---')
+    yaml_end = data.index('...') + 3
+    meta = yaml.load(data[yaml_start:yaml_end])
+    source = data[yaml_end:]
+    return meta, source
+
+
 def get_name_from_filename(filename):
     parts = filename.split('_')
     return ' '.join([

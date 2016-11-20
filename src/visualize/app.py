@@ -2,9 +2,13 @@ import json
 
 from flask import (
     Flask,
+    jsonify,
     send_file,
     send_from_directory
 )
+
+from p2_convert import split_meta_source
+
 app = Flask(__name__, static_folder='package/static')
 
 
@@ -29,4 +33,13 @@ def snippet(program_id):
         manifest = json.load(manifest_file)
     program_filepath = manifest[str(program_id)]
     app.logger.info("snippet({}) --> {}".format(program_id, program_filepath))
-    return send_file(program_filepath)
+
+    with open(program_filepath, 'r') as input_file:
+        data = input_file.read()
+
+    meta, source = split_meta_source(data)
+    response_data = {
+        'meta': meta,
+        'data': source
+    }
+    return jsonify(response_data)
