@@ -2,9 +2,11 @@ import ast
 import json
 import os
 
+import yaml
+
 from ast_visitors import CountingVisitor
 from disjoint_set import Forest
-from program_meta import ProgramMeta, ProgramMetaGroup
+from program_info import ProgramInfo, ProgramInfoGroup
 from graph import Graph
 from graph_utils import topological_sort
 from utils import warn
@@ -12,13 +14,19 @@ from utils import warn
 
 def get_file_meta(filepath):
     file = open(filepath, 'r')
-    source = file.read()
+    data = file.read()
+
+    yaml_start = data.index('---')
+    yaml_end = data.index('...') + 3
+    meta = yaml.load(data[yaml_start:yaml_end])
+    source = data[yaml_end:]
+
     root = ast.parse(source)
 
     counter = CountingVisitor()
     counter.visit(root)
 
-    return ProgramMeta(filepath, counter.counts)
+    return ProgramInfo(filepath, counter.counts, meta)
 
 
 def decompose_to_scc(programs):
@@ -40,7 +48,7 @@ def decompose_to_scc(programs):
         try:
             program_group = minimal_programs[pid]
         except KeyError:
-            program_group = minimal_programs[pid] = ProgramMetaGroup([])
+            program_group = minimal_programs[pid] = ProgramInfoGroup([])
         program_group.add(program)
 
     return minimal_programs.values()
@@ -52,7 +60,7 @@ def process(path_to_dir, debug):
     program_to_vertex = {}
     for filename in os.listdir(path_to_dir):
         _, extension = os.path.splitext(filename)
-        if extension != '.py':
+        if extension != '.p2':
             continue
 
         filepath = os.path.join(path_to_dir, filename)

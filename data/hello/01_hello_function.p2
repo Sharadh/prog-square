@@ -1,0 +1,9 @@
+---
+created_by: p2-contributor
+created_on: 1479673504.0
+language: py
+name: Hello Function
+references: []
+...
+def say_hello():
+    print "Hello Function!"

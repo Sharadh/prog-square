@@ -4,3 +4,4 @@ flask
 ipython
 nose
 pep8
+pyyaml

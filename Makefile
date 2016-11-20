@@ -39,7 +39,7 @@ clean:
 	@find src/ -iname "*.pyc" -exec rm {} \;
 
 console: install
-	@cd src; ipython
+	@. $(VENV_ACTIVATE_SCRIPT); cd src; ipython
 
 test: install
 	@nosetests tests/

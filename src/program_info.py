@@ -1,7 +1,7 @@
 from os import path
 
 
-class ProgramMeta(object):
+class ProgramInfo(object):
     COUNT = 0
     PROGRAMS = {}
 
@@ -18,10 +18,11 @@ class ProgramMeta(object):
     def ids(cls):
         return cls.PROGRAMS.keys()
 
-    def __init__(self, filepath, token_counts):
+    def __init__(self, filepath, token_counts, meta):
         self.pid = self.generate_pid()
         self.filepath = filepath
         self.counts = token_counts
+        self.meta = meta
 
         self.register(self)
 
@@ -33,7 +34,7 @@ class ProgramMeta(object):
         return self.name
 
     def __repr__(self):
-        return "<ProgramMeta {}>".format(self.name)
+        return "<ProgramInfo {}>".format(self.name)
 
     def __contains__(self, other):
         return (
@@ -51,8 +52,8 @@ class ProgramMeta(object):
         return not self.__eq__(other)
 
 
-class ProgramMetaGroup(ProgramMeta):
-    """Think of this as a CompositeProgramMeta,
+class ProgramInfoGroup(ProgramInfo):
+    """Think of this as a CompositeProgramInfo,
     not as a container or iterator. Simplifies
     dealing with single/merged programs.
     Ref: https://en.wikipedia.org/wiki/Composite_pattern
@@ -90,5 +91,5 @@ class ProgramMetaGroup(ProgramMeta):
         return self.name
 
     def __repr__(self):
-        return "<ProgramMetaGroup {}+{}>".format(
+        return "<ProgramInfoGroup {}+{}>".format(
             self.delegate.name, len(self.programs) - 1)
