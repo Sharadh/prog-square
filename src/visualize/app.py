@@ -1,8 +1,11 @@
+from datetime import datetime
+from functools import wraps
 import json
 
 from flask import (
     Flask,
     jsonify,
+    make_response,
     send_file,
     send_from_directory
 )
@@ -10,6 +13,22 @@ from flask import (
 from p2_convert import split_meta_source
 
 app = Flask(__name__, static_folder='package/static')
+
+
+def no_cache(view):
+    @wraps(view)
+    def f(*args, **kwargs):
+        response = make_response(view(*args, **kwargs))
+        response.headers['Last-Modified'] = datetime.now()
+        response.headers['Cache-Control'] = ' '.join([
+            'no-store', 'no-cache', 'must-revalidate',
+            'post-check=0', 'pre-check=0', 'max-age=0'
+            ])
+        response.headers['Pragma'] = 'no-cache'
+        response.headers['Expires'] = '-1'
+        return response
+
+    return f
 
 
 @app.route('/home')
@@ -23,11 +42,13 @@ def resources(path):
 
 
 @app.route('/graph/default')
+@no_cache
 def default():
     return send_file('./package/graph.json')
 
 
 @app.route('/graph/default/snippet/<int:program_id>')
+@no_cache
 def snippet(program_id):
     with open('./package/manifest.json', 'r') as manifest_file:
         manifest = json.load(manifest_file)
