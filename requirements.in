@@ -2,6 +2,8 @@ click
 flake8
 flask
 ipython
+lxml
 nose
 pep8
 pyyaml
+requests

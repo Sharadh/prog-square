@@ -47,6 +47,9 @@ coverage.xml
 venv/
 ENV/
 
+# pycharm
+.idea
+
 # Project Specific
 .DS_Store
 _reading
