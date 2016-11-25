@@ -59,4 +59,10 @@ visualize: install
 	@. $(VENV_ACTIVATE_SCRIPT); cd src/visualize;\
 	 $(FLASK_CONFIG) python -m flask run
 
+so-recent: install
+	@rm -rf data/so_temp; mkdir data/so_temp
+	@. $(VENV_ACTIVATE_SCRIPT); cd src;\
+	 python cli.py pull_so_recent 'data/so_temp' -c 100
+
+
 .PHONY: run serve visualize

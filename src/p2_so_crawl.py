@@ -1,4 +1,3 @@
-from datetime import datetime, timedelta
 from os import path
 
 import yaml
@@ -20,7 +19,7 @@ def get_name_from_question_link(full_link):
     ])
 
 
-def get_filename_for_snippet(snippet):
+def get_filepath_for_snippet(snippet, path_to_dir):
     # First, throw away the anchor part of the link...
     anchor_pos = snippet.url.find('#')
     if anchor_pos >= 0:
@@ -29,8 +28,22 @@ def get_filename_for_snippet(snippet):
         full_link = snippet.url
 
     # Now, get the final part of link, and use as filename
-    link = path.basename(full_link)
-    return '{}.p2'.format(link)
+    # To be safe, make sure to use utf8 for filepath compatibility
+    link = path.basename(full_link).encode('utf-8')
+    filename = '{}.p2'.format(link)
+    filepath = path.join(path_to_dir, filename)
+
+    # Lets make sure we aren't overwriting an existing file
+    # To be safe, lets bound the number of attempts to a reasonable number like 100
+    # (Bonus: This also makes the code more func-y, without loop counters)
+    for i in xrange(100):
+        if not path.exists(filepath):
+            break
+        filename = '{}({})'.format(link, i + 1)
+        filepath = path.join(path_to_dir, filename)
+
+    # By design, if 100 attempts fail to find a unique filepath, the 100th duplicate is overwritten...
+    return filepath
 
 
 def snippet_to_source(snippet):
@@ -44,7 +57,7 @@ def snippet_to_source(snippet):
         'references': [snippet.extra_url]
     }
     yaml_meta = yaml.dump(meta, default_flow_style=False)
-    return '---\n{}...\n{}'.format(yaml_meta, snippet.code)
+    return u'---\n{}...\n{}'.format(yaml_meta, snippet.code)
 
 
 def pull_snippets(num_snippets, start_time, end_time, extra_tags, save_to_dir):
@@ -52,18 +65,8 @@ def pull_snippets(num_snippets, start_time, end_time, extra_tags, save_to_dir):
     for snippet in snippets:
         full_source = snippet_to_source(snippet)
 
-        output_filename = get_filename_for_snippet(snippet)
-        output_filepath = path.join(save_to_dir, output_filename)
+        output_filepath = get_filepath_for_snippet(snippet, save_to_dir)
         with open(output_filepath, 'w') as output_file:
-            output_file.write(full_source)
-
-
-if __name__ == '__main__':
-    current_time = datetime.utcnow()
-    pull_snippets(
-        num_snippets=50,
-        start_time=(current_time - timedelta(weeks=1)),
-        end_time=current_time,
-        extra_tags=[],
-        save_to_dir=path.realpath('../data/so_temp')
-    )
+            # Encode Late: Convert string to utf8 just before writing
+            output_file.write(full_source.encode('utf-8'))
+    return len(snippets)

@@ -112,8 +112,10 @@ def fetch_snippets(num_snippets, start_time, end_time, extra_tags):
             warn('No more questions to fetch: Terminating')
             break
 
-    log('Retrieving {} accepted answers for analysis...'.format(len(answer_ids)))
+    # Filter out `None` accepted_answer_id's
     answer_ids = [str(ans_id) for ans_id in answer_ids if ans_id]
+
+    log('Retrieving {} accepted answers for analysis...'.format(len(answer_ids)))
     for i in range(0, len(answer_ids), ANSWER_BATCH_SIZE):
         batch = answer_ids[i:i + ANSWER_BATCH_SIZE]
         answers = fetch_answers(batch, filters.Answers)

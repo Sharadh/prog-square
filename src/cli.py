@@ -1,9 +1,11 @@
+from datetime import datetime, timedelta
 import os
 import json
 
 import click
 
 from main import process
+from p2_so_crawl import pull_snippets
 from utils import success, warn
 
 
@@ -59,6 +61,24 @@ def order(input_dir, output, manifest, debug):
 
     success('Wrote partial ordering graph of {} to {}'.format(input_dirpath, output_filepath))
     success('Created manifest file at {}'.format(manifest_filepath))
+
+
+@cli.command()
+@click.argument('output-dir', type=click.Path())
+@click.option('--tag', '-t', multiple=True)
+@click.option('--count', '-c', default=50)
+def pull_so_recent(output_dir, tag, count):
+    output_dirpath = os.path.realpath(os.path.join('..', output_dir))
+    current_time = datetime.utcnow()
+    num_snippets = pull_snippets(
+        num_snippets=count,
+        start_time=(current_time - timedelta(weeks=1)),
+        end_time=current_time,
+        extra_tags=list(tag),
+        save_to_dir=output_dirpath
+    )
+
+    success('Pulled {} snippets from StackOverflow into {}'.format(num_snippets, output_dirpath))
 
 
 if __name__ == '__main__':
