@@ -62,3 +62,4 @@ node_modules
 
 src/visualize/package/graph.json
 src/visualize/package/manifest.json
+_generated*
