@@ -16,35 +16,39 @@ from api_utils import (
     ANSWER_BATCH_SIZE
 )
 from custom_filters import load_filter_file
+from snippet import Snippet
 
 parser = etree.HTMLParser()
-
-MAX_QUESTION_NUM = 50
-REQUEST_PAGE_SIZE = min(MAX_PAGE_SIZE, MAX_QUESTION_NUM)
 
 
 def get_snippets(html_string):
     tree = etree.parse(StringIO(html_string), parser)
-    code_snippets = [el.text for el in tree.iter() if el.tag == 'code']
+    block_tags = tree.findall('.//pre/code')
+    code_snippets = [el.text for el in block_tags]
     return code_snippets
 
 
-def fetch_recent_questions(page_num, filter_name):
+def fetch_recent_questions(num_questions, from_time, to_time, tags, page_num, filter_name):
     page_num = page_num or 1
+    request_page_size = min(MAX_PAGE_SIZE, num_questions)
+
     url = build_url(
         'questions',
         site='stackoverflow',
         sort='activity',
         order='desc',
-        tagged=['python'],
-        fromdate=(datetime.utcnow() - timedelta(weeks=1)),
-        todate=datetime.utcnow(),
-        pagesize=REQUEST_PAGE_SIZE,
+        tagged=['python'] + tags,
+        fromdate=from_time,
+        todate=to_time,
+        pagesize=request_page_size,
         page=page_num,
         filter=filter_name
     )
     response = requests.get(url)
     response_data = response.json()
+    log('Quota Remaining: {} of {}'.format(
+        response_data.get('quota_remaining', '?'),
+        response_data.get('quota_max', '?')))
     return response_data['items'], response_data['has_more']
 
 
@@ -56,10 +60,22 @@ def fetch_answers(answer_ids, filter_name):
     )
     response = requests.get(url)
     response_data = response.json()
+    log('Quota Remaining: {} of {}'.format(
+        response_data.get('quota_remaining', '?'),
+        response_data.get('quota_max', '?')))
     return response_data['items']
 
 
-def main():
+def fetch_snippets(num_snippets, start_time, end_time, extra_tags):
+    """
+    Fetches snippets from StackOverflow by looking at 'python' questions
+    in the time-period specified, and retrieving `<pre><code>` code blocks
+    from these questions (and their answers, where applicable)
+
+    Note that currently the number of snippets returned is not the same as
+    the number requested: it depends on the number of retrieved questions with
+    a code block, as well as the number with an accepted answer with a code block
+    """
     filters = load_filter_file()
 
     snippets = []
@@ -67,10 +83,27 @@ def main():
 
     questions_retrieved = 0
     page_num = 1
-    while questions_retrieved < MAX_QUESTION_NUM:
-        questions, has_more = fetch_recent_questions(page_num, filters.Questions)
+    while questions_retrieved < num_snippets:
+        questions, has_more = fetch_recent_questions(
+            num_questions=(num_snippets - questions_retrieved),
+            from_time=start_time,
+            to_time=end_time,
+            tags=extra_tags,
+            page_num=page_num,
+            filter_name=filters.Questions
+        )
+        current_time = datetime.utcnow()
         for q in questions:
-            snippets += get_snippets(q['body'])
+            snippets += [
+                Snippet(
+                    snippet_id=q['question_id'],
+                    code=block,
+                    url=q['link'],
+                    author='stack-overflow',
+                    retrieved_at=current_time,
+                    additional_url=None
+                )
+                for block in get_snippets(q['body'])]
             answer_ids.append(q.get('accepted_answer_id', None))
 
         questions_retrieved += len(questions)
@@ -85,9 +118,29 @@ def main():
         batch = answer_ids[i:i + ANSWER_BATCH_SIZE]
         answers = fetch_answers(batch, filters.Answers)
         for a in answers:
-            snippets += get_snippets(a['body'])
+            snippets += [
+                Snippet(
+                    snippet_id=a['answer_id'],
+                    code=block,
+                    url=a['link'],
+                    author='stack-overflow',
+                    retrieved_at=current_time,
+                    additional_url=None
+                )
+                for block in get_snippets(a['body'])]
 
     success('Retrieved {} snippets'.format(len(snippets)))
+    return snippets
+
+
+def main():
+    current_time = datetime.utcnow()
+    fetch_snippets(
+        num_snippets=50,
+        start_time=(current_time - timedelta(weeks=1)),
+        end_time=current_time,
+        extra_tags=[]
+    )
 
 
 if __name__ == '__main__':

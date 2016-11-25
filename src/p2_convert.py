@@ -18,8 +18,7 @@ def get_name_from_filename(filename):
     ])
 
 
-def main():
-    path_to_dir = os.path.realpath('../data/practice-python')
+def convert(path_to_dir, primary_reference):
     for filename in os.listdir(path_to_dir):
         filepath = os.path.join(path_to_dir, filename)
         with open(filepath, 'r') as input_file:
@@ -34,7 +33,7 @@ def main():
             'created_on': os.path.getmtime(filepath),
             'created_by': 'p2-contributor',
             'retrieved_from': '',
-            'references': ['http://www.practicepython.org/']
+            'references': [primary_reference]
         }
 
         output_filename = '{}.p2'.format(base)
@@ -46,4 +45,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    convert()
