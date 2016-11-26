@@ -4,6 +4,7 @@ from io import StringIO
 from lxml import etree
 import requests
 
+from order.source_handler import check_source
 from utils import (
     log,
     success,
@@ -19,6 +20,16 @@ from custom_filters import load_filter_file
 from snippet import Snippet
 
 parser = etree.HTMLParser()
+
+
+def check_source_and_warn(source, link):
+    if not check_source(source):
+        log('-----')
+        warn('Error parsing snipppet from {}'.format(link))
+        log(source)
+        log('-----\n')
+        return False
+    return True
 
 
 def get_snippets(html_string):
@@ -103,7 +114,8 @@ def fetch_snippets(num_snippets, start_time, end_time, extra_tags):
                     retrieved_at=current_time,
                     additional_url=None
                 )
-                for block in get_snippets(q['body'])]
+                for block in get_snippets(q['body'])
+                if check_source_and_warn(block, q['link'])]
             answer_ids.append(q.get('accepted_answer_id', None))
 
         questions_retrieved += len(questions)
@@ -129,7 +141,8 @@ def fetch_snippets(num_snippets, start_time, end_time, extra_tags):
                     retrieved_at=current_time,
                     additional_url=None
                 )
-                for block in get_snippets(a['body'])]
+                for block in get_snippets(a['body'])
+                if check_source_and_warn(block, q['link'])]
 
     success('Retrieved {} snippets'.format(len(snippets)))
     return snippets

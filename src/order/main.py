@@ -1,15 +1,14 @@
-import ast
 import json
 import os
 
 from generate.p2_convert import split_meta_source
 from utils import warn
 
-from ast_visitors import CountingVisitor
 from disjoint_set import Forest
 from graph import Graph
 from graph_utils import topological_sort
 from program_info import ProgramInfo, ProgramInfoGroup
+from source_handler import count_tokens
 
 
 def get_program_info(filepath):
@@ -18,12 +17,9 @@ def get_program_info(filepath):
 
     meta, source = split_meta_source(data)
 
-    root = ast.parse(source)
+    token_counts = count_tokens(source)
 
-    counter = CountingVisitor()
-    counter.visit(root)
-
-    return ProgramInfo(filepath, counter.counts, meta)
+    return ProgramInfo(filepath, token_counts, meta)
 
 
 def decompose_to_scc(programs):
