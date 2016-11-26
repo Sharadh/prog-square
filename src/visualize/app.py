@@ -1,6 +1,6 @@
+import json
 from datetime import datetime
 from functools import wraps
-import json
 
 from flask import (
     Flask,
@@ -10,7 +10,7 @@ from flask import (
     send_from_directory
 )
 
-from p2_convert import split_meta_source
+from generate.p2_convert import split_meta_source
 
 app = Flask(__name__, static_folder='package/static')
 

@@ -1,13 +1,14 @@
-from datetime import datetime, timedelta
-import os
 import json
+import os
+from datetime import datetime, timedelta
 
 import click
 
-from main import process
-from p2_convert import convert_py as p2_convert_py
-from p2_so_crawl import pull_snippets
 from utils import success, warn
+
+from generate.p2_convert import convert_py as p2_convert_py
+from generate.p2_so_crawl import pull_snippets
+from order.main import process
 
 
 @click.group()

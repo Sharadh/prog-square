@@ -5,7 +5,7 @@ import yaml
 from so_crawl.crawl import fetch_snippets
 
 
-def get_name_from_question_link(full_link):
+def _get_name_from_question_link(full_link):
     # First, throw away the anchor part of the link...
     anchor_pos = full_link.find('#')
     if anchor_pos >= 0:
@@ -19,7 +19,7 @@ def get_name_from_question_link(full_link):
     ])
 
 
-def get_filepath_for_snippet(snippet, path_to_dir):
+def _get_filepath_for_snippet(snippet, path_to_dir):
     # First, throw away the anchor part of the link...
     anchor_pos = snippet.url.find('#')
     if anchor_pos >= 0:
@@ -42,12 +42,13 @@ def get_filepath_for_snippet(snippet, path_to_dir):
         filename = '{}({})'.format(link, i + 1)
         filepath = path.join(path_to_dir, filename)
 
-    # By design, if 100 attempts fail to find a unique filepath, the 100th duplicate is overwritten...
+    # By design, if 100 attempts fail to find a unique filepath,
+    # the 100th duplicate is overwritten...
     return filepath
 
 
-def snippet_to_source(snippet):
-    title = get_name_from_question_link(snippet.url)
+def _snippet_to_source(snippet):
+    title = _get_name_from_question_link(snippet.url)
     meta = {
         'name': title,
         'language': 'py',
@@ -63,9 +64,9 @@ def snippet_to_source(snippet):
 def pull_snippets(num_snippets, start_time, end_time, extra_tags, save_to_dir):
     snippets = fetch_snippets(num_snippets, start_time, end_time, extra_tags)
     for snippet in snippets:
-        full_source = snippet_to_source(snippet)
+        full_source = _snippet_to_source(snippet)
 
-        output_filepath = get_filepath_for_snippet(snippet, save_to_dir)
+        output_filepath = _get_filepath_for_snippet(snippet, save_to_dir)
         with open(output_filepath, 'w') as output_file:
             # Encode Late: Convert string to utf8 just before writing
             output_file.write(full_source.encode('utf-8'))

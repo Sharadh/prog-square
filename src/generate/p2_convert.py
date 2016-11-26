@@ -11,7 +11,7 @@ def split_meta_source(data):
     return meta, source
 
 
-def get_name_from_filename(filename):
+def _get_name_from_filename(filename):
     parts = filename.split('_')
     return ' '.join([
         part.title() for part in parts[1:]
@@ -29,7 +29,7 @@ def convert_py(path_to_dir, author, primary_reference):
         if ext != '.py':
             continue
         meta = {
-            'name': get_name_from_filename(base),
+            'name': _get_name_from_filename(base),
             'language': ext[1:],
             'created_on': os.path.getmtime(filepath),
             'created_by': author,
