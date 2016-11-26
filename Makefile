@@ -59,10 +59,15 @@ visualize: install
 	@. $(VENV_ACTIVATE_SCRIPT); cd src/visualize;\
 	 $(FLASK_CONFIG) python -m flask run
 
+convert-py: install
+	@rm -f $(SOURCE)/*.p2
+	@. $(VENV_ACTIVATE_SCRIPT); cd src;\
+	 python cli.py convert_py $(SOURCE) --author 'someguy' --reference 'http://foo.com/bar'
+
 so-recent: install
 	@rm -rf data/so_temp; mkdir data/so_temp
 	@. $(VENV_ACTIVATE_SCRIPT); cd src;\
 	 python cli.py pull_so_recent 'data/so_temp' -c 100
 
 
-.PHONY: run serve visualize
+.PHONY: run serve visualize convert-py so-recent

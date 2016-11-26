@@ -63,3 +63,6 @@ node_modules
 src/visualize/package/graph.json
 src/visualize/package/manifest.json
 _generated*
+data/so_temp
+
+data/convert_test_dir/*.p2

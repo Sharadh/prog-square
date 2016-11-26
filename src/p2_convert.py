@@ -18,7 +18,8 @@ def get_name_from_filename(filename):
     ])
 
 
-def convert(path_to_dir, primary_reference):
+def convert_py(path_to_dir, author, primary_reference):
+    num_files_converted = 0
     for filename in os.listdir(path_to_dir):
         filepath = os.path.join(path_to_dir, filename)
         with open(filepath, 'r') as input_file:
@@ -31,7 +32,7 @@ def convert(path_to_dir, primary_reference):
             'name': get_name_from_filename(base),
             'language': ext[1:],
             'created_on': os.path.getmtime(filepath),
-            'created_by': 'p2-contributor',
+            'created_by': author,
             'retrieved_from': '',
             'references': [primary_reference]
         }
@@ -43,6 +44,5 @@ def convert(path_to_dir, primary_reference):
                 yaml.dump(meta, default_flow_style=False)))
             output_file.write(code)
 
-
-if __name__ == '__main__':
-    convert()
+        num_files_converted += 1
+    return num_files_converted

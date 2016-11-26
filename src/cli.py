@@ -5,6 +5,7 @@ import json
 import click
 
 from main import process
+from p2_convert import convert_py as p2_convert_py
 from p2_so_crawl import pull_snippets
 from utils import success, warn
 
@@ -61,6 +62,21 @@ def order(input_dir, output, manifest, debug):
 
     success('Wrote partial ordering graph of {} to {}'.format(input_dirpath, output_filepath))
     success('Created manifest file at {}'.format(manifest_filepath))
+
+
+@cli.command()
+@click.argument('input-dir', type=click.Path())
+@click.option('--author', default='p2-contributor')
+@click.option('--reference', '-r', default=None)
+def convert_py(input_dir, author, reference):
+    input_dirpath = os.path.realpath(os.path.join('..', input_dir))
+    num_files = p2_convert_py(
+        path_to_dir=input_dirpath,
+        author=author,
+        primary_reference=reference
+    )
+
+    success('Converted {} *.py programs in {} to *.p2'.format(num_files, input_dirpath))
 
 
 @cli.command()
