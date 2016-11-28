@@ -52,7 +52,8 @@ def default():
 def snippet(program_id):
     with open('./package/manifest.json', 'r') as manifest_file:
         manifest = json.load(manifest_file)
-    program_filepath = manifest[str(program_id)]
+    program_meta = manifest[str(program_id)]
+    program_filepath = program_meta['filepath']
     app.logger.info("snippet({}) --> {}".format(program_id, program_filepath))
 
     with open(program_filepath, 'r') as input_file:

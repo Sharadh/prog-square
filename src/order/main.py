@@ -121,10 +121,13 @@ def graph_to_d3_dict(graph):
                 )
 
     data = {'nodes': [], 'links': []}
-    filepaths = {}
+    meta = {}
     for vid in ordered_graph:
         vertex = graph.V[vid]
-        filepaths[new_ids[vertex.uid]] = vertex.data.filepath
+        meta[new_ids[vertex.uid]] = {
+            'filepath': vertex.data.filepath,
+            'token_counts': vertex.data.counts
+        }
         data['nodes'].append({
             'id': new_ids[vertex.uid],
             'name': vertex.data.name,
@@ -137,4 +140,4 @@ def graph_to_d3_dict(graph):
                 'target': new_ids[to_vertex.uid]
             })
 
-    return data, filepaths
+    return data, meta
