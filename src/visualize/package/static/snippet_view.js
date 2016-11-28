@@ -17,11 +17,29 @@
         .text(text)
     }
 
+    function serializeTokens (tokens) {
+      var codeString = ''
+      if (tokens) {
+        for (var tokenName in tokens) {
+          if (tokens.hasOwnProperty(tokenName)) {
+            codeString += tokenName + ': ' + tokens[tokenName] + '\n'
+          }
+        }
+      }
+      return codeString
+    }
+
     this.el = d3.select(el)
     this.title = this.el
       .append('h3')
         .attr('class', 'snippet-title col-sm-12')
     this.codeBlock = this.el
+      .append('pre')
+        .attr('class', 'code-snippet col-sm-12')
+        .style('padding', '0px')
+        .style('background', 'transparent')
+      .append('code')
+    this.tokenCountBlock = this.el
       .append('pre')
         .attr('class', 'code-snippet col-sm-12')
         .style('padding', '0px')
@@ -79,6 +97,9 @@
 
       this.codeBlock.text(snippetCode)
       hljs.highlightBlock(this.codeBlock.node())
+
+      this.tokenCountBlock.text(serializeTokens(snippetMeta.tokens))
+      hljs.highlightBlock(this.tokenCountBlock.node())
 
       this.updateDetails(snippetMeta)
     }.bind(this)
