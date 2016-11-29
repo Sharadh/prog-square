@@ -50,7 +50,11 @@ text {
     text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, 0 -1px 0 #fff, -1px 0 0 #fff;
 }
 
-/* Modify bootstrap's padding */
+/* Modify bootstrap's grid-layout */
+.row {
+    margin-left: 0;
+    margin-right: 0;
+}
 .row > * {
     padding: 0;
 }
