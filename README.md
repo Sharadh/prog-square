@@ -6,7 +6,17 @@ P2: Programming Progressions
 To help educators and learners understand the *progression of skills* involved in transitioning from beginner to expert for any given programming problem set.
 
 ## Components
-1. `scr/cli.py`: Entry point for the *ordering* component: given a directory of `*.py` files, this generates the partial-ordering on this dataset (and associated metadata.)
+1. `scr/cli.py`: Entry point for the various sub-components. Exposes a number of sub-commands. To see them, type:
+```
+. ./venv/bin/activate
+cd src
+python cli.py --help
+```
+To see the usage of any subcommand, (e.g the `order` task) type:
+```
+python cli.py order --help
+```
+Documentation specific to how each subcommand works can be seen in the appropriate submodules. 
 2. `src/visalize/app.py`: Minimal Flask-app that serves the static files, as well as generated graph, snippets, etc.
 
 # Partial Ordering
@@ -60,6 +70,13 @@ SOURCE=data/hello make
 ```
 
 The default dataset is the `practice-python` dataset of ~20 problems and their solutions.
+
+### Running on StackOverflow posts
+The repository also exposes `make` targets to retrieve the most recent StackOverflow posts tagged `python`. To run the ordering analysis on these tasks, first pull the code snippets (into the `data/so_temp` directory), and then visualize this source.
+```
+make pull_so_recent
+SOURCE=data/so_temp make visualize
+```
 
 ## Tests
 There's no easy way to say this... tests are not up yet. Stay tuned (or better still, contribute some unit-tests!)
